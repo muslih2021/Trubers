@@ -1,0 +1,366 @@
+
+@import "primereact/resources/themes/lara-light-purple/theme.css";
+$primaryColor: #7149C6;
+$primaryColor2: #F3060D;
+$secondaryColor: #FF0025;
+$title:#0A090A;
+$third: #fb9736;
+$thridLight:#FBBC05;
+$lightred:#e74c3c;
+
+:root {
+  /* Ganti primary color */
+  --primary-color: #7149C6;
+  --primary-color-hover: #e60020;
+  --primary-color-active: #cc001f;
+  --secondary-color: #FF0025;
+  --success-color: #28a745;
+  --info-color: #17a2b8;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+}
+
+
+@font-face {
+  font-family: "Lufga";
+  src: url("./src/assets/fonts/Lufga-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Lufga";
+  src: url("./src/assets/fonts/Lufga-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Lufga";
+  src: url("./src/assets/fonts/Lufga-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Lufga";
+  src: url("./src/assets/fonts/Lufga-Bold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Lufga";
+  src: url("./src/assets/fonts/Lufga-ExtraBold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* Kelas untuk langsung digunakan */
+.lufga {
+  font-family: "Lufga", sans-serif;
+}
+
+.lufga-medium {
+  font-family: "Lufga", sans-serif;
+  font-weight: 500;
+}
+
+.lufga-semibold {
+  font-family: "Lufga", sans-serif;
+  font-weight: 600;
+}
+
+.lufga-bold {
+  font-family: "Lufga", sans-serif;
+  font-weight: bold;
+}
+
+.lufga-extrabold {
+  font-family: "Lufga", sans-serif;
+  font-weight: 800;
+}
+
+/* Reset dasar untuk layout */
+:root {
+  --font-family: "Lufga", sans-serif;
+}
+
+/* Hilangkan scroll horizontal */
+html,
+body {
+  overflow-x: hidden;
+  width: 100vw;
+}
+
+
+
+// // Ubah tombol PrimeReact default
+// .p-button {
+//   background: linear-gradient(130deg, #03adac 0%, #FF0025 100%) !important;
+//   border: none !important;
+//   color: white !important;
+// }
+// Gaya tombol custom
+.gradient-button {
+  background: linear-gradient(130deg, $primaryColor 0%, $secondaryColor 100%);
+  background-size: 100% 100%;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-size 0.5s ease-in-out;
+
+  &:hover {
+    background-size: 200% 200%;
+    
+  }
+}
+.background-gradient{
+    background: linear-gradient(130deg, $primaryColor 0%, $secondaryColor 100%);
+}
+.text-primarys {
+  color: var(--primarys-color);
+}
+.text-secondary {
+  color: var(--secondary-color);
+}
+.text-title {
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color),var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.text-lightred-color{
+color: var(--lightred-color);
+}
+.Link {
+  color: var(--primary-color);
+  text-decoration: none;
+  &:hover {
+      color: var(--secondary-color);
+    }
+}
+
+.p-icon-field {
+  width: 100%;
+}
+
+.p-carousel .p-carousel-indicators .p-carousel-indicator button {
+  background-color: #ffffff51;
+  width: 0.5rem;
+  height: 0.5rem;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  border-radius: 50%;
+}
+
+.p-carousel .p-carousel-indicators li[data-p-highlight="true"] button {
+  background-color: white;
+  width: 0.5rem;
+  height: 0.5rem;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  border-radius: 50%;
+}
+
+/* Tombol prev & next custom */
+.custom-prev,
+.custom-next {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: rgb(255, 255, 255) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-prev:hover,
+.custom-next:hover {
+  color:$primaryColor !important;
+  background-color: rgb(255, 255, 255) !important;
+ 
+}
+.white{
+  color: white;
+}
+.thrid{
+  color: $third;
+}
+.thridLight{
+  color: $thridLight;
+}
+
+.p-paginator .p-paginator-page.p-highlight {
+  background-color: #ffc7c75e;
+  color: $primaryColor;
+}
+.p-sortable-column{
+    background-color:transparent;
+}
+.p-sortable-column-icon {
+  margin-top: -0.50rem;
+}
+
+// dropdown-filter
+.dropdown-icon-only.p-dropdown {
+  padding: 0;
+  border: none;
+  background: transparent;
+  width: auto;
+  box-shadow: none;
+}
+
+.dropdown-icon-only.p-dropdown .p-dropdown-label {
+  padding: 0;
+  margin: 0;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown-icon-only.p-dropdown .p-dropdown-trigger {
+  display: none;
+}
+
+.dropdown-icon-only.p-dropdown:focus,
+.dropdown-icon-only.p-dropdown.p-focus {
+  box-shadow: none;
+  border: none;
+  outline: none;
+}
+
+.dropdown-icon-only.p-dropdown:hover {
+  background: transparent;
+}
+.pi-filter{
+  margin-left: 0.5rem;
+}
+
+.pi-filter:hover{
+  color: var(--primary-700);
+}
+
+.pi-filter.active-filter {
+color: var(--primary-700);
+}
+.role-text.active-role {
+color: var(--primary-700);
+}
+
+.p-datatable .p-datatable-tbody>tr.p-highlight {
+  background-color: #ffb9b956 !important;
+  color: $primaryColor !important;
+}
+
+.p-dropdown-item.p-highlight {
+  background-color: #ffb9b956 !important;
+  color: $primaryColor !important;
+}
+
+.p-multiselect-label-container {
+  display: none;
+}
+.p-multiselect {
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+}
+.p-multiselect-item.p-highlight {
+  background-color: #ffb9b956 !important;
+  color: $primaryColor !important;
+}
+.no-padding-tabview .p-tabview-panels {
+  padding: 0 !important;
+}
+.p-datepicker table td>span.p-highlight {
+  background: #ffe7e7;
+  color: $primaryColor;
+}
+.DialogEditSurat {
+  background-color: #ffffff;
+  // .p-dialog-content {
+  //   // overflow: hidden; // default untuk layar md ke atas
+
+  //   // @media (max-width: 767px) {
+  //   //   overflow: auto; 
+  //   // }
+  //   	height: 8rem;
+  // }
+}
+.custom-scroll-surat {
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(104, 225, 148, 0.252) transparent;
+}
+.custom-scroll-surat::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scroll-surat::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll-surat::-webkit-scrollbar-thumb {
+  background-color: rgba(225, 104, 104, 0.4);
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+
+
+.cardsurat2 {
+  height: 82%;
+  background-color: #f0f5f9;
+}
+
+.cardsurat3 {
+  height: 10%;
+}
+.cardsurat2Child {
+  height: 92%;
+  max-width: 35%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: white;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px,
+        rgba(17, 17, 26, 0.05) 0px 8px 32px;
+  border-radius: 15px;
+}
+.previewsuratuser2 {
+  display: flex;
+  overflow: auto;
+  width: auto;
+  background-color: #f0f5f9;
+  border-color: #00ffaa00;
+}
+
+.cardsurat1{
+  .p-message-wrapper{
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+    font-size: 0.9rem;
+    padding-right: 0.8rem;
+  }
+}.cardsurat1 {
+  @media (max-width: 768px) {
+    .p-message-wrapper {
+      padding-top: 0.4rem;
+      padding-bottom: 0.4rem;
+      font-size: 0.6rem;
+      padding-left: 0.8rem;
+      padding-right: 0.8rem;
+    
+    }
+  }
+}
+

@@ -1,0 +1,567 @@
+/* 1. Google Fonts harus di paling atas */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poetsen+One&display=swap");
+
+/* 3. Variabel CSS custom */
+:root {
+	--font-jakarta: "Plus Jakarta Sans", sans-serif;
+	--font-poetsen: "Poetsen One", sans-serif;
+
+	--color-primary: #7149c6;
+	--color-secondary: #ff0025;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
+	background-color: white;
+}
+
+.wave {
+	overflow: hidden;
+	margin-left: 0rem;
+}
+
+.wavelogin {
+	overflow: hidden;
+	margin-left: 0rem;
+}
+
+@media (min-width: 768px) {
+	/* md ke atas */
+	.wave {
+		margin-left: -20rem;
+	}
+	.shrink-box {
+		cursor: pointer;
+		transition: width 0.4s ease-in-out;
+		width: 14rem;
+		overflow: hidden;
+	}
+	.shrink-box.shrink {
+		width: 6rem;
+	}
+	.container {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		align-items: start;
+		cursor: pointer;
+		transition: justify-content 0.4s ease-in-out;
+	}
+
+	.active-menu {
+		display: inline-block;
+		width: 10rem;
+		background-color: #fbdedf;
+		border-radius: 0.5rem;
+		font-weight: 700;
+		color: #f3060d;
+		text-decoration: none;
+		padding: 10px 0px;
+		position: relative;
+		transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+
+		&::after {
+			content: "";
+			position: absolute;
+			left: 10%;
+			bottom: -4px;
+			width: 80%;
+			height: 2px;
+			background-color: #f3060d;
+			border-radius: 2px;
+			transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out;
+			opacity: 1;
+		}
+	}
+
+	.no-active {
+		display: inline-block;
+		width: 10rem;
+		border-radius: 0.5rem;
+		font-weight: 500;
+		color: #5f383a;
+		text-decoration: none;
+		padding: 10px 0px;
+		position: relative;
+		transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+
+		&::after {
+			content: "";
+			position: absolute;
+			left: 50%;
+			bottom: -4px;
+			width: 10%;
+			height: 2px;
+			background-color: #f3060d;
+			border-radius: 2px;
+			transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out,
+				left 0.3s ease-in-out;
+			opacity: 0;
+			transform: translateX(-50%);
+		}
+
+		&:hover {
+			color: #f3060d;
+
+			&::after {
+				opacity: 1;
+				width: 80%;
+				left: 50%;
+			}
+		}
+	}
+	.profile {
+		width: 93%;
+	}
+	.childerContent {
+		width: 100%;
+	}
+	.sidebar {
+		height: 95vh;
+	}
+
+	.tanda_tangan {
+		height: 600px;
+		display: flex;
+		align-items: center;
+	}
+	.tanda_tangan img {
+		height: auto;
+		width: 100%;
+	}
+}
+/* Custom Scrollbar untuk seluruh halaman */
+::-webkit-scrollbar {
+	width: 10px; /* Lebar scrollbar */
+}
+
+::-webkit-scrollbar-track {
+	background: #f1f1f1; /* Warna latar track */
+	border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #888; /* Warna thumb (bagian yang bisa digeser) */
+	border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #555; /* Warna saat hover */
+}
+
+.forgot-password {
+	background-image: url("./assets/images/banda4.jpeg");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.reset-password {
+	background-image: url("./assets/images/banda3.jpeg");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+@media (max-width: 768px) {
+	/* md ke atas */
+	.shrink-box {
+		cursor: pointer;
+		transition: width 0.4s ease-in-out;
+		width: 100vw;
+		overflow: hidden;
+	}
+	.shrink-box.shrink {
+		width: 100vw;
+		height: 10vh;
+	}
+	.container {
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-around;
+		cursor: pointer;
+		transition: justify-content 0.4s ease-in-out;
+		width: 100%;
+		height: 10vh;
+	}
+	.active-menu {
+		/* width: 10rem; */
+		background-color: #e7ffea;
+		border-radius: 0.5rem;
+		font-weight: 700;
+		color: #ff0025;
+		text-decoration: none;
+		position: relative;
+		transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+
+		&::after {
+			content: "";
+			position: absolute;
+			left: 10%;
+			bottom: -4px;
+			width: 80%;
+			height: 2px;
+			background-color: #ff0025;
+			border-radius: 2px;
+			transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out;
+			opacity: 1;
+		}
+	}
+
+	.no-active {
+		border-radius: 0.5rem;
+		font-weight: 500;
+		color: #ff0025;
+		text-decoration: none;
+		transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+
+		&::after {
+			content: "";
+			position: absolute;
+			left: 50%;
+			bottom: -4px;
+			width: 10%;
+			height: 2px;
+			background-color: #ff0025;
+			border-radius: 2px;
+			transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out,
+				left 0.3s ease-in-out;
+			opacity: 0;
+			transform: translateX(-50%);
+		}
+
+		&:hover {
+			color: #ff0025;
+
+			&::after {
+				opacity: 1;
+				width: 80%;
+				left: 50%;
+			}
+		}
+	}
+	.profile {
+		min-width: 100vw;
+		max-width: 100vw;
+	}
+	.gradient-border::before {
+		display: none;
+	}
+	.Grayscale-border::before {
+		display: none;
+	}
+	.signatureCanvas {
+		width: 80vw;
+		height: auto;
+	}
+	.tanda_tangan {
+		height: auto;
+		width: 80vw;
+	}
+	.tanda_tangan img {
+		height: 25vh;
+		width: auto;
+	}
+	.previewKtp {
+		width: 10px;
+	}
+}
+
+.shrink-name {
+	padding: 0 0;
+	font-size: 1.1rem;
+}
+.shrink-name.shrink {
+	padding: 0rem 3rem;
+	font-size: 0.8rem;
+}
+
+.container.shrink {
+	align-items: center;
+}
+.neobackground {
+	border-radius: 32px;
+	background: #ffffff;
+	box-shadow: 13px 13px 26px #dedede, -13px -13px 26px #ffffff;
+	transition: all 0.3s;
+}
+
+.neobackground2 {
+	border-radius: 32px;
+	background: linear-gradient(225deg, #ffffff, #e6e6e6);
+	box-shadow: -8px 8px 16px #a6a6a6, 8px -8px 16px #ffffff;
+}
+.neobackground:hover {
+	box-shadow: 5px 5px 10px #dedede, -5px -5px 10px #ffffff;
+}
+
+.cardBackground {
+	background-color: #7149c6;
+	color: white;
+}
+.gradient-border {
+	position: relative;
+}
+.Grayscale-border {
+	position: relative;
+}
+
+.gradient-border::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	border-radius: 1.5rem 0px 0px 1.5rem;
+	top: 0;
+	width: 1%;
+	margin-left: 0.01em;
+	height: 100%;
+	background: linear-gradient(to bottom, #7149c6, #ff0025);
+}
+.zoom-on-hover {
+	transition: transform 0.3s ease;
+	object-fit: contain;
+}
+
+.card-hover:hover .zoom-on-hover {
+	transform: scale(1.1);
+}
+
+.gradient-bordercardgreen {
+	position: relative;
+	cursor: pointer;
+	color: #038d8d;
+}
+.gradient-bordercardorange {
+	position: relative;
+	cursor: pointer;
+	color: #e5ad06;
+}
+.gradient-bordercardblue {
+	position: relative;
+	cursor: pointer;
+	color: #555293;
+}
+.gradient-bordercardgreen::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	border-radius: 4rem 0px 0px 4rem;
+	top: 0;
+	width: 2%;
+	margin-left: 0.01em;
+	height: 100%;
+	background: linear-gradient(to bottom, #5f383a, #f3060d);
+}
+.gradient-bordercardorange::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	border-radius: 4rem 0px 0px 4rem;
+	top: 0;
+	width: 2%;
+	margin-left: 0.01em;
+	height: 100%;
+	background: linear-gradient(to bottom, #ffd65b, #e5ad06);
+}
+.gradient-bordercardblue::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	border-radius: 4rem 0px 0px 4rem;
+	top: 0;
+	width: 2%;
+	margin-left: 0.01em;
+	height: 100%;
+	background: linear-gradient(to bottom, #b7b3ff, #736ecc);
+}
+.Grayscale-border::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	border-radius: 1.5rem 0px 0px 1.5rem;
+	top: 0;
+	width: 1%;
+	margin-left: 0.01em;
+	height: 100%;
+	background: linear-gradient(to bottom, #d7dcdb, #000000);
+}
+.file-input {
+	display: none;
+}
+
+.file-label {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 10px 16px;
+	background-color: transparent;
+	color: #fb0505;
+	border: 2px solid #fb0505;
+	border-radius: 8px;
+	font-size: 14px;
+	cursor: pointer;
+	overflow: hidden; /* Supaya efek tetap di dalam border */
+	transition: color 0.3s ease-in-out;
+}
+
+.file-label::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(135deg, #7149c6, #ff0025);
+	transition: left 0.3s ease-in-out;
+	z-index: 0;
+}
+
+.file-label:hover::before {
+	left: 0;
+}
+
+.file-label:hover {
+	color: #ffffff;
+}
+
+.file-label > * {
+	position: relative;
+	z-index: 1;
+}
+
+.file-icon {
+	font-size: 16px;
+	transition: transform 0.3s ease-in-out;
+}
+
+.file-label:hover .file-icon {
+	transform: scale(1.1);
+}
+
+.Timelinecardright {
+	background: linear-gradient(to left, #48ffc2, #03a8a8);
+	color: white;
+}
+.Timelinecardleft {
+	background: linear-gradient(to left, #03a8a8, #48ffc2);
+	color: white;
+}
+.a1 {
+	display: block;
+	width: fit-content;
+	margin: 0 auto;
+}
+.previewsuratuser {
+	display: flex;
+	overflow: auto;
+	width: auto;
+	height: 38rem;
+	background-color: #f0f5f9;
+	border-color: #00ffaa00;
+}
+.aa {
+	background-color: #e7e7e7;
+}
+
+/* testting */
+.card34534 {
+	width: 300px;
+	border-radius: 16px;
+	overflow: hidden;
+	background: #000000;
+	height: 25rem;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	position: relative;
+}
+
+.card34534 img {
+	width: 100%;
+	transition: transform 0.5s ease;
+	display: block;
+}
+.card34534:hover img {
+	transform: scale(1.2);
+}
+
+.editcard34534-btn {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	background: #ffffff;
+	border-radius: 50%;
+	width: 36px;
+	height: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	font-size: 16px;
+}
+
+.editcard34534-btn:hover {
+	background: linear-gradient(to bottom, #ff0025 0%, #7149c6 100%);
+}
+.editcard34534-btn:hover svg > path {
+	fill: #ffffff;
+}
+
+.cardcard34534-content {
+	padding: 16px;
+	background: rgba(0, 0, 0, 0.75);
+	color: #fff;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+.cardcard34534-content p {
+	margin: 0 0 8px;
+	font-size: 14px;
+	line-height: 1.4;
+}
+
+.cardcard34534-content .hashtags {
+	color: #cbd5e1;
+	font-size: 13px;
+	margin-bottom: 12px;
+}
+
+.cardcard34534-footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 13px;
+}
+
+.cardcard34534-footer div {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.cardcard34534-footer i {
+	font-size: 14px;
+}
+
+.background-gradientLogin {
+	width: 100%;
+	height: 100vh; /* full height */
+	background: linear-gradient(135deg, #7149c6 17.8%, #ff0025 100%);
+}
+
+.signup-title {
+	margin-top: 45rem; /* margin default untuk HP */
+}
+
+/* Layar medium ke atas (misal ≥768px) */
+@media (max-width: 768px) {
+	.signup-title {
+		margin-top: 2rem; /* hanya berlaku di layar besar */
+	}
+}
