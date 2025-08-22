@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import useSWR from "swr";
 import { Dropdown } from "primereact/dropdown";
 import "primeflex/primeflex.css";
+import profilePict from '../../assets/images/profile-picture.png';
 
 // fetcher SWR
 const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -30,30 +31,28 @@ const Leaderboard = () => {
 		data?.map((item) => {
 			if (activeButton === "Account") {
 				return {
-					id: item.id,
-					name: item.name,
-					username: item.nama_akun || "-",
-					avatar:
-						item.url_foto_profile || `https://i.pravatar.cc/150?img=${item.id}`,
-					like: safeNumber(item.totalLikes),
-					comment: safeNumber(item.totalComments),
-					view: safeNumber(item.totalViews),
-					nilai: safeNumber(item.totalScore),
-				};
+          id: item.id,
+          name: item.name,
+          username: item.nama_akun || '-',
+          avatar: item.url_foto_profile || profilePict,
+          like: safeNumber(item.totalLikes),
+          comment: safeNumber(item.totalComments),
+          view: safeNumber(item.totalViews),
+          nilai: safeNumber(item.totalScore),
+        };
 			} else {
 				const user = item.user || {};
 				return {
-					id: item.id,
-					name: user.name || "Unknown",
-					username: user.nama_akun || "-",
-					avatar:
-						user.url_foto_profile || `https://i.pravatar.cc/150?img=${item.id}`,
-					like: safeNumber(item.likes),
-					comment: safeNumber(item.comments),
-					view: safeNumber(item.video_views),
-					nilai: safeNumber(item.score),
-					url_postingan: item.url_postingan,
-				};
+          id: item.id,
+          name: user.name || 'Unknown',
+          username: user.nama_akun || '-',
+          avatar: user.url_foto_profile || profilePict,
+          like: safeNumber(item.likes),
+          comment: safeNumber(item.comments),
+          view: safeNumber(item.video_views),
+          nilai: safeNumber(item.score),
+          url_postingan: item.url_postingan,
+        };
 			}
 		}) || [];
 
