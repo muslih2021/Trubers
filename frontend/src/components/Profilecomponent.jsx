@@ -729,7 +729,7 @@ const ProfileComponent = () => {
 								/>
 							</div>
 						</div>
-						<div className="flex align-items-center  justify-content-between ">
+						{/* <div className="flex align-items-center  justify-content-between ">
 							<label className="label text-md">
 								Notifikasi Lewat Google Chrome
 							</label>
@@ -808,7 +808,7 @@ const ProfileComponent = () => {
 									)}
 								</OverlayPanel>
 							</div>
-						</div>
+						</div> */}
 					</div>
 				</AccordionTab>
 			</Accordion>

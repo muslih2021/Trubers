@@ -6,7 +6,9 @@ import { NavLink } from "react-router-dom";
 import useSWR from "swr";
 import { Dropdown } from "primereact/dropdown";
 // fetcher SWR
+const API_URL = import.meta.env.VITE_API_URL_BACKEND;
 const fetcher = (url) => fetch(url).then((res) => res.json());
+import LoadingSpinner from "./LoadingSpinner";
 
 // fallback helper
 const safeNumber = (value) => (value != null ? value : 0);
@@ -21,8 +23,8 @@ const Welcome = () => {
 	// URL berdasarkan tab
 	const url =
 		activeButton === "Account"
-			? `http://localhost:5000/ContentReportByUserRank?orderBy=${orderBy}`
-			: `http://localhost:5000/ContentReportByPostRank?orderBy=${orderBy}`;
+			? `${API_URL}/ContentReportByUserRank?orderBy=${orderBy}`
+			: `${API_URL}/ContentReportByPostRank?orderBy=${orderBy}`;
 
 	const { data, error, isLoading } = useSWR(url, fetcher);
 
@@ -103,7 +105,7 @@ const Welcome = () => {
 		if (user?.id) checkSubscriptionStatus();
 	}, [user]);
 
-	if (isLoading) return <p>Loading...</p>;
+	if (isLoading) return LoadingSpinner;
 	if (error) return <p>Error: {error.message}</p>;
 	return (
 		<div className="min-w-full md:flex px-6 justify-content-center gap-6">

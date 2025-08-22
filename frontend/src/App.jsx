@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard.jsx";
 import Login from "./pages/Login.jsx";
 import Users from "./pages/Users.jsx";
-import Notifikasi from "./pages/Notifikasi.jsx";
 import Regis from "./components/Auth/Regris.jsx";
 import Profile from "./pages/Profile.jsx";
 import ForgotPassword from "./components/Auth/ForgotPassword.jsx";
@@ -24,7 +23,6 @@ function App() {
 					<Route path="/regis" element={<Regis />} />
 					<Route path="/dashboard" element={<Dashboard />} />
 					<Route path="/profile" element={<Profile />} />
-					<Route path="/notifikasi" element={<Notifikasi />} />
 					<Route path="/content-report" element={<Report />} />
 					<Route path="/forgot-password" element={<ForgotPassword />} />
 					<Route path="/reset-password/:token" element={<ResetPassword />} />

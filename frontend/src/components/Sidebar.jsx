@@ -31,15 +31,6 @@ const Sidebar = () => {
 		});
 	};
 
-	const { data: notifCountData } = useSWR(
-		user
-			? `${API_URL}/riwayatsuratnotifikasi?status=belum_dibaca&onlyCount=true`
-			: null,
-		fetcher
-	);
-
-	const unreadCount = notifCountData?.totalRows || 0;
-
 	const logout = () => {
 		dispatch(LogOut());
 		dispatch(reset());
@@ -251,47 +242,6 @@ const Sidebar = () => {
 								</ul>
 							</>
 						)}
-						{/* <ul className="list-none p-0 my-3 md:flex-order-3 flex-order-3">
-							<li className="text-center ">
-								<NavLink
-									className={({ isActive }) =>
-										isActive ? "active-link active-menu" : "no-active"
-									}
-									to={"/notifikasi"}
-								>
-									{" "}
-									<i
-										className="text-secondary pi pi-bell p-overlay-badge"
-										style={{ fontSize: "1.2rem" }}
-									>
-										{unreadCount > 0 && (
-											<Badge
-												value={unreadCount}
-												severity="info"
-												style={{
-													fontSize: "0.6rem",
-													padding: "0.1rem 0.3rem",
-													minWidth: "auto",
-													height: "auto",
-													lineHeight: "1",
-													borderRadius: "999px",
-												}}
-											/>
-										)}
-									</i>
-									<span className={`shrink-box ${small ? "shrink" : ""}`}>
-										{!small && (
-											<span
-												className="hidden md:inline"
-												style={{ transition: "opacity 0.3s ease-in-out" }}
-											>
-												Notifikasi
-											</span>
-										)}
-									</span>
-								</NavLink>
-							</li>
-						</ul> */}
 
 						<ul className="list-none p-0 md:hidden flex my-3 md:flex-order-3 flex-order-3">
 							<li className="text-center ">
