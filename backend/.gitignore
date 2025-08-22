@@ -1,2 +1,17 @@
-config/
+# Node modules
 node_modules/
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+
+# Folder config
+config/
+
+# Build output
+dist/
+build/

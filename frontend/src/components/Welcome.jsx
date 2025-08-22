@@ -5,10 +5,12 @@ import { Toast } from 'primereact/toast';
 import { NavLink } from 'react-router-dom';
 import useSWR from 'swr';
 import { Dropdown } from 'primereact/dropdown';
+import profilePict from '../assets/images/profile-picture.png';
 // fetcher SWR
 const API_URL = import.meta.env.VITE_API_URL_BACKEND;
 const fetcher = (url) => fetch(url).then((res) => res.json());
 import LoadingSpinner from './LoadingSpinner';
+
 
 // fallback helper
 const safeNumber = (value) => (value != null ? value : 0);
@@ -37,7 +39,7 @@ const Welcome = () => {
           name: item.name,
           username: item.nama_akun || '-',
           avatar:
-            item.url_foto_profile || `https://i.pravatar.cc/150?img=${item.id}`,
+            item.url_foto_profile || profilePict,
           like: safeNumber(item.totalLikes),
           comment: safeNumber(item.totalComments),
           view: safeNumber(item.totalViews),
@@ -49,8 +51,7 @@ const Welcome = () => {
           id: item.id,
           name: user.name || 'Unknown',
           username: user.nama_akun || '-',
-          avatar:
-            user.url_foto_profile || `https://i.pravatar.cc/150?img=${item.id}`,
+          avatar: user.url_foto_profile || profilePict,
           like: safeNumber(item.likes),
           comment: safeNumber(item.comments),
           view: safeNumber(item.video_views),
