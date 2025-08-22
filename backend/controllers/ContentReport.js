@@ -141,7 +141,7 @@ export const getContentReportById = async (req, res) => {
 		});
 
 		if (!pengajuan) {
-			return res.status(404).json({ msg: "Pengajuan surat tidak ditemukan" });
+			return res.status(404).json({ msg: "Pengajuan content tidak ditemukan" });
 		}
 
 		// 🔐 Batasi akses jika bukan admin
@@ -151,7 +151,7 @@ export const getContentReportById = async (req, res) => {
 		if (!isAdmin && !isOwner) {
 			return res
 				.status(403)
-				.json({ msg: "Anda tidak berhak mengakses surat ini." });
+				.json({ msg: "Anda tidak berhak mengakses content ini." });
 		}
 
 		res.json({
@@ -251,7 +251,7 @@ export const createContentReport = async (req, res) => {
 
 		res.status(201).json({ msg: "Berhasil", pengajuan });
 	} catch (error) {
-		console.error("Error saat membuat pengajuan surat:", error);
+		console.error("Error saat membuat pengajuan content:", error);
 		res.status(500).json({ msg: "Terjadi kesalahan saat membuat pengajuan" });
 	}
 };
@@ -351,7 +351,7 @@ export const updateContentReportById = async (req, res) => {
 		const pengajuan = await ContentReport.findOne({ where: { uuid } });
 
 		if (!pengajuan) {
-			return res.status(404).json({ msg: "Pengajuan surat tidak ditemukan" });
+			return res.status(404).json({ msg: "Pengajuan content tidak ditemukan" });
 		}
 
 		// Update data sekaligus set status menjadi "dinilai"
@@ -363,17 +363,60 @@ export const updateContentReportById = async (req, res) => {
 			description_caption,
 			owner,
 			score,
-			status: "dinilai", // perbaikan di sini
+			status: "dinilai",
 		});
 
+		// Ambil user yang melakukan update (opsional)
+		const userPengubah = await User.findOne({ where: { id: req.userId } });
+
+		// Ambil semua user yang perlu diberi notifikasi
+		const targetList = await User.findAll({
+			where: { email_notifikasi: true },
+		});
+
+		// Kirim notifikasi email secara async (tidak blokir response)
+		(async () => {
+			await Promise.all(
+				targetList
+					.filter((u) => u.email)
+					.map(async (userTarget) => {
+						const emailHtml = `
+							<div style="font-family: Arial; line-height: 1.6;">
+								<h2>Konten Anda sudah dinilai</h2>
+								<p>Halo ${userTarget.name},</p>
+								<p>Konten Anda telah dinilai oleh ${userPengubah?.name || "Admin"}.</p>
+								<p>
+									<a href="${process.env.URL_FRONTEND}/content-report"
+										style="background:#2196F3;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;">
+										Tinjau konten
+									</a>
+								</p>
+							</div>
+						`;
+
+						try {
+							await sendEmail(
+								userTarget.email,
+								"Pengajuan konten dinilai",
+								emailHtml
+							);
+							console.log("📧 Email terkirim ke:", userTarget.email);
+						} catch (err) {
+							console.error("❌ Gagal kirim email ke:", userTarget.email, err);
+						}
+					})
+			);
+		})();
+
+		// Response langsung dikirim agar user tidak menunggu proses kirim email
 		res.status(200).json({
-			msg: "Pengajuan surat berhasil diperbarui",
+			msg: "Pengajuan content berhasil diperbarui dan status menjadi 'dinilai'",
 			pengajuan,
 		});
 	} catch (error) {
-		console.error("❌ Error saat update pengajuan surat:", error);
+		console.error("❌ Error saat update pengajuan content:", error);
 		res.status(500).json({
-			msg: "Terjadi kesalahan saat update pengajuan surat",
+			msg: "Terjadi kesalahan saat update pengajuan content",
 		});
 	}
 };
