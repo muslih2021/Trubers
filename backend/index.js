@@ -22,13 +22,13 @@ const store = new sessionStore({
 	expiration: 7 * 24 * 60 * 60 * 1000,
 });
 
-(async () => {
-	await db.sync();
-})();
-(async () => {
-	await db.sync({ alter: true });
-	console.log("Database synchronized");
-})();
+// (async () => {
+// 	await db.sync();
+// })();
+// (async () => {
+// 	await db.sync({ alter: true });
+// 	console.log("Database synchronized");
+// })();
 app.use(
 	session({
 		secret: process.env.SESS_SECRET,
@@ -61,7 +61,7 @@ app.use(ContentReportRoute);
 app.use(pushRoutes);
 app.use(ThemeRoute);
 
-store.sync();
+// store.sync();
 
 app.listen(process.env.APP_PORT, () => {
 	console.log("server up and running...........");

@@ -365,54 +365,56 @@ export const updateContentReportById = async (req, res) => {
 			score,
 			status: "dinilai",
 		});
-
-		// Ambil user yang melakukan update (opsional)
-		const userPengubah = await User.findOne({ where: { id: req.userId } });
-
-		// Ambil semua user yang perlu diberi notifikasi
-		const targetList = await User.findAll({
-			where: { email_notifikasi: true },
-		});
-
-		// Kirim notifikasi email secara async (tidak blokir response)
-		(async () => {
-			await Promise.all(
-				targetList
-					.filter((u) => u.email)
-					.map(async (userTarget) => {
-						const emailHtml = `
-							<div style="font-family: Arial; line-height: 1.6;">
-								<h2>Konten Anda sudah dinilai</h2>
-								<p>Halo ${userTarget.name},</p>
-								<p>Konten Anda telah dinilai oleh ${userPengubah?.name || "Admin"}.</p>
-								<p>
-									<a href="${process.env.URL_FRONTEND}/content-report"
-										style="background:#2196F3;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;">
-										Tinjau konten
-									</a>
-								</p>
-							</div>
-						`;
-
-						try {
-							await sendEmail(
-								userTarget.email,
-								"Pengajuan konten dinilai",
-								emailHtml
-							);
-							console.log("📧 Email terkirim ke:", userTarget.email);
-						} catch (err) {
-							console.error("❌ Gagal kirim email ke:", userTarget.email, err);
-						}
-					})
-			);
-		})();
-
 		// Response langsung dikirim agar user tidak menunggu proses kirim email
 		res.status(200).json({
 			msg: "Pengajuan content berhasil diperbarui dan status menjadi 'dinilai'",
 			pengajuan,
 		});
+		// Ambil user yang melakukan update (opsional)
+		const userPengubah = await User.findOne({ where: { id: req.userId } });
+		// Ambil user pemilik pengajuan (hanya 1 user, bukan semua)
+		const targetUser = await User.findOne({
+			where: { id: pengajuan.userId },
+		});
+
+		// Kirim notifikasi email secara async (tidak blokir response)
+		if (targetUser && targetUser.email) {
+			const emailHtml = `
+		<div style="font-family: Arial, sans-serif; background-color: #f4f6f8; padding: 20px;">
+			<div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); padding: 20px;">
+				<h2 style="color: #2196F3; margin-top: 0;">📢 Konten Anda sudah dinilai</h2>
+				<p style="font-size: 15px; color: #333;">Halo <strong>${
+					targetUser.name
+				}</strong>,</p>
+				<p style="font-size: 14px; color: #555;">
+					Konten Anda telah dinilai oleh <strong>${"Pihak Trubers"}</strong>.
+				</p>
+				
+				<div style="margin: 25px 0; text-align: center;">
+					<a href="${process.env.URL_FRONTEND}/content-report"
+						style="background: #2196F3; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: bold; display: inline-block;">
+						🔍 Tinjau Konten
+					</a>
+				</div>
+
+				<p style="font-size: 13px; color: #888; text-align: center; margin-top: 30px;">
+					Pesan ini dikirim otomatis, mohon tidak membalas langsung.
+				</p>
+			</div>
+		</div>
+	`;
+
+			try {
+				await sendEmail(
+					targetUser.email,
+					"Pengajuan Konten Dinilai",
+					emailHtml
+				);
+				console.log("📧 Email terkirim ke:", targetUser.email);
+			} catch (err) {
+				console.error("❌ Gagal kirim email ke:", targetUser.email, err);
+			}
+		}
 	} catch (error) {
 		console.error("❌ Error saat update pengajuan content:", error);
 		res.status(500).json({
