@@ -560,7 +560,7 @@ export const updateAllScrapingData = async (req, res) => {
 
 			// jeda 30 detik tiap update agar tidak overload
 			if (i < allReports.length - 1) {
-				await new Promise((resolve) => setTimeout(resolve, 3000));
+				await new Promise((resolve) => setTimeout(resolve, 30000));
 			}
 		}
 
@@ -587,10 +587,10 @@ export const updateAllScrapingData = async (req, res) => {
 // });
 
 // Jadwalkan cron job (4x sehari = tiap 6 jam sekali)
-// cron.schedule("0 */6 * * *", async () => {
-// 	console.log("⏰ Cronjob scraping dimulai...");
-// 	await updateAllScrapingData({});
-// });
+cron.schedule("0 */6 * * *", async () => {
+	console.log("⏰ Cronjob scraping dimulai...");
+	await updateAllScrapingData({});
+});
 
 // cron.schedule("* * * * *", async () => {
 // 	console.log("⏰ Cronjob test jalan...");
