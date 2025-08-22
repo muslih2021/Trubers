@@ -91,7 +91,7 @@ const ForgotPassword = () => {
 
 				<Button
 					disabled={loading}
-					label={loading ? "Loading....." : "Sign Up"}
+					label={loading ? "Loading....." : "Reset Password"}
 					type="submit"
 					className=" lufga-semi-bold mt-3 md:mb-0 mb-8 fadeindown animation-duration-1000 gradient-button w-8"
 				/>

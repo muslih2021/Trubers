@@ -176,13 +176,14 @@ const Regis = () => {
 				</div>
 
 				<h1 className="w-10 text-title text-5xl text-left lufga-extrabold fadeinup animation-duration-1000">
-					Sign Up
+					Form Pendaftaran
 				</h1>
 				<p
 					style={{ color: "var(--surface-400)" }}
 					className="lufga text-sm -mt-3 w-10 text-left"
 				>
-					Silahkan Lengkapi Data Anda Untuk Melakukan Pendaftaran Akun
+					Yuk Lengkapi Data Anda Untuk Melakukan Pendaftaran Menjadi Trust
+					Builder Telkomsel
 				</p>
 				<div className="md:flex  gap-2 md:mb-3 mt-4 w-10">
 					<div className="flex-1 flex flex-column gap-5 justify-content-start">
@@ -400,7 +401,7 @@ const Regis = () => {
 					</Link>
 				</div>
 				<Button
-					label={loading ? "Loading....." : "Sign Up"}
+					label={loading ? "Loading....." : "Daftar"}
 					disabled={loading}
 					type="submit"
 					className=" lufga-semi-bold mt-3 md:mb-3 md:py-4 mb-8 fadeindown animation-duration-1000 gradient-button w-10"

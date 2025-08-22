@@ -17,9 +17,12 @@ const Subscribe = () => {
 						menuju masa depan!
 					</h2>
 
-					<button className="btn-gradient mt-1 md:mt-5 cursor-pointer">
+					<a
+						href="/regis"
+						className="no-underline btn-gradient mt-1 md:mt-5 cursor-pointer"
+					>
 						Daftar Sekarang
-					</button>
+					</a>
 				</div>
 			</div>
 		</section>
