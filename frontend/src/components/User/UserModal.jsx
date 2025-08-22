@@ -32,7 +32,13 @@ const UserModal = forwardRef(
 			linkmedsos: "",
 			password: "",
 			confPassword: "",
-			role: "user",
+			sosmed_utama: "",
+			nama_akun: "",
+			jumlah_follower_terakhir: "",
+			interest_minat: "",
+			kota: "",
+			sekolah: "",
+			kelas: "",
 			isVerified: false,
 		});
 
@@ -99,6 +105,13 @@ const UserModal = forwardRef(
 					name: "",
 					email: "",
 					linkmedsos: "",
+					sosmed_utama: "",
+					nama_akun: "",
+					jumlah_follower_terakhir: "",
+					interest_minat: "",
+					kota: "",
+					sekolah: "",
+					kelas: "",
 					password: "",
 					confPassword: "",
 					role: "user",
@@ -211,6 +224,117 @@ const UserModal = forwardRef(
 									<label className="lufga" htmlFor="linkmedsos">
 										Link Media Sosial
 									</label>
+								</FloatLabel>
+							</div>
+							{/* SOSMED UTAMA (Dropdown) */}
+							<div className="field">
+								<FloatLabel className="mb-4 mt-6 w-full fadeinleft animation-duration-500">
+									<Dropdown
+										id="sosmed_utama"
+										name="sosmed_utama"
+										value={formData.sosmed_utama}
+										options={[
+											{ label: "Instagram", value: "instagram" },
+											{ label: "TikTok", value: "tiktok" },
+										]}
+										placeholder="Pilih sosmed"
+										className="w-full"
+										onChange={(e) =>
+											handleChange({
+												target: { name: "sosmed_utama", value: e.value },
+											})
+										}
+									/>
+									<label htmlFor="sosmed_utama">Sosmed Utama</label>
+								</FloatLabel>
+							</div>
+
+							{/* NAMA AKUN */}
+							<div className="field">
+								<FloatLabel className="mb-4 mt-6 w-full fadeinleft animation-duration-500">
+									<InputText
+										id="nama_akun"
+										name="nama_akun"
+										value={formData.nama_akun}
+										onChange={handleChange}
+										className="p-inputtext-sm md:p-inputtext-md w-full"
+										required
+									/>
+									<label htmlFor="nama_akun">Nama Akun</label>
+								</FloatLabel>
+							</div>
+
+							{/* JUMLAH FOLLOWER TERAKHIR */}
+							<div className="field">
+								<FloatLabel className="mb-4 mt-6 w-full fadeinleft animation-duration-500">
+									<InputText
+										id="jumlah_follower_terakhir"
+										name="jumlah_follower_terakhir"
+										value={formData.jumlah_follower_terakhir}
+										onChange={handleChange}
+										className="p-inputtext-sm md:p-inputtext-md w-full"
+										inputMode="numeric"
+									/>
+									<label htmlFor="jumlah_follower_terakhir">
+										Jumlah Follower Terakhir
+									</label>
+								</FloatLabel>
+							</div>
+
+							{/* INTEREST / MINAT */}
+							<div className="field">
+								<FloatLabel className="mb-4 mt-6 w-full fadeinleft animation-duration-500">
+									<InputText
+										id="interest_minat"
+										name="interest_minat"
+										value={formData.interest_minat}
+										onChange={handleChange}
+										className="p-inputtext-sm md:p-inputtext-md w-full"
+										placeholder=""
+									/>
+									<label htmlFor="interest_minat">Interest / Minat</label>
+								</FloatLabel>
+							</div>
+
+							{/* KOTA */}
+							<div className="field">
+								<FloatLabel className="mb-4 mt-6 w-full fadeinleft animation-duration-500">
+									<InputText
+										id="kota"
+										name="kota"
+										value={formData.kota}
+										onChange={handleChange}
+										className="p-inputtext-sm md:p-inputtext-md w-full"
+									/>
+									<label htmlFor="kota">Kota</label>
+								</FloatLabel>
+							</div>
+
+							{/* SEKOLAH */}
+							<div className="field">
+								<FloatLabel className="mb-4 mt-6 w-full fadeinleft animation-duration-500">
+									<InputText
+										id="sekolah"
+										name="sekolah"
+										value={formData.sekolah}
+										onChange={handleChange}
+										className="p-inputtext-sm md:p-inputtext-md w-full"
+									/>
+									<label htmlFor="sekolah">Sekolah</label>
+								</FloatLabel>
+							</div>
+
+							{/* KELAS */}
+							<div className="field">
+								<FloatLabel className="mb-4 mt-6 w-full fadeinleft animation-duration-500">
+									<InputText
+										id="kelas"
+										name="kelas"
+										value={formData.kelas}
+										onChange={handleChange}
+										className="p-inputtext-sm md:p-inputtext-md w-full"
+									/>
+									<label htmlFor="kelas">Kelas</label>
 								</FloatLabel>
 							</div>
 

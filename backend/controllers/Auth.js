@@ -91,7 +91,18 @@ export const updateMe = async (req, res) => {
 			return res.status(404).json({ msg: "User tidak ditemukan" });
 		}
 
-		const { name, email, linkmedsos } = req.body;
+		const {
+			name,
+			email,
+			linkmedsos,
+			sosmed_utama,
+			nama_akun,
+			jumlah_follower_terakhir,
+			interest_minat,
+			kota,
+			sekolah,
+			kelas,
+		} = req.body;
 
 		let fileNameProfile = user.foto_profile;
 		let urlProfile = user.url_foto_profile;
@@ -138,6 +149,14 @@ export const updateMe = async (req, res) => {
 		user.linkmedsos = linkmedsos || user.linkmedsos;
 		user.foto_profile = fileNameProfile || user.foto_profile;
 		user.url_foto_profile = urlProfile || user.url_foto_profile;
+		user.sosmed_utama = sosmed_utama || user.sosmed_utama;
+		user.nama_akun = nama_akun || user.nama_akun;
+		user.jumlah_follower_terakhir =
+			jumlah_follower_terakhir || user.jumlah_follower_terakhir;
+		user.interest_minat = interest_minat || user.interest_minat;
+		user.kota = kota || user.kota;
+		user.sekolah = sekolah || user.sekolah;
+		user.kelas = kelas || user.kelas;
 
 		await user.save();
 		res.status(200).json({
