@@ -8,7 +8,6 @@ import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Password } from "primereact/password";
 import { Link } from "react-router-dom";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Toast } from "primereact/toast";
 import { clearToast } from "../../features/toastSlice";
 import { Dialog } from "primereact/dialog";
@@ -132,7 +131,7 @@ const Login = () => {
 				breakpoints={{ "960px": "75vw", "641px": "100vw" }}
 			>
 				<div className="fadein animation-duration-1000">
-					<DotLottieReact
+					<img
 						style={{ width: "100%", height: "auto" }}
 						src="https://lottie.host/4b5d3e7e-29ca-4228-a8b0-5023b6da5a63/YcwyvKHgzZ.lottie"
 						loop

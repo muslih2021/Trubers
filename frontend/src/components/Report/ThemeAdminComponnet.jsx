@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import useSWR from "swr";
 import { IconField } from "primereact/iconfield";
@@ -6,8 +6,6 @@ import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
 import { Paginator } from "primereact/paginator";
 import { useSelector } from "react-redux";
-import { AutoComplete } from "primereact/autocomplete";
-import { Calendar } from "primereact/calendar";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { Skeleton } from "primereact/skeleton";
@@ -17,12 +15,9 @@ import { MultiSelect } from "primereact/multiselect";
 import dayjs from "dayjs";
 import { addLocale } from "primereact/api";
 import "dayjs/locale/id";
-import { Avatar } from "primereact/avatar";
-import { Dropdown } from "primereact/dropdown";
 import { Tag } from "primereact/tag";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import ThemeAdminFormModal from "./ThemeAdminFormModal";
-import { NavLink } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL_BACKEND;
 const fetcher = async (url) => (await axios.get(url)).data;
@@ -178,6 +173,7 @@ const ThemeAdminComponnet = () => {
 		{ field: "name", header: "name", sortable: true },
 		{
 			field: "status",
+			header: "Status",
 		},
 		{ field: "Actions", header: "Actions" },
 		{

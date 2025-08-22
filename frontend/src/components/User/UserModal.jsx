@@ -7,12 +7,9 @@ import React, {
 } from "react";
 import { Dialog } from "primereact/dialog";
 import { Messages } from "primereact/messages";
-
-import { Image } from "primereact/image";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Password } from "primereact/password";
-import { InputMask } from "primereact/inputmask";
 import { Divider } from "primereact/divider";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
@@ -22,10 +19,6 @@ const UserModal = forwardRef(
 		{ isOpen, closeModal, user, saveUser, msg, isNew, isShow, saveData },
 		ref
 	) => {
-		const [tandaTangan, setTandaTangan] = useState(null);
-		const [ktp, setKtp] = useState(null);
-		const [previewTtd, setPreviewTtd] = useState("");
-		const [previewKtp, setPreviewKtp] = useState("");
 		const [formData, setFormData] = useState({
 			name: "",
 			email: "",
@@ -44,6 +37,12 @@ const UserModal = forwardRef(
 
 		const msgs = useRef(null);
 
+		useEffect(() => {
+			console.log("User in modals:", user);
+			if (user) {
+				setFormData(user);
+			}
+		}, [user]);
 		useImperativeHandle(ref, () => ({
 			showMessage(content, severity = "error") {
 				msgs.current.show([
@@ -64,36 +63,6 @@ const UserModal = forwardRef(
 				]);
 			}
 		}, [msg]);
-
-		const loadImageTtd = (e) => {
-			const file = e.target.files[0];
-			setTandaTangan(file);
-			setPreviewTtd(URL.createObjectURL(file));
-		};
-
-		const loadImageKtp = (e) => {
-			const file = e.target.files[0];
-			setKtp(file);
-			setPreviewKtp(URL.createObjectURL(file));
-		};
-
-		useEffect(() => {
-			console.log("User in modals:", user);
-			if (user) {
-				setFormData(user);
-				if (user.url_foto_ktp) {
-					setPreviewKtp(user.url_foto_ktp);
-				} else {
-					setPreviewKtp("");
-				}
-
-				if (user.url_tanda_tangan) {
-					setPreviewTtd(user.url_tanda_tangan);
-				} else {
-					setPreviewTtd("");
-				}
-			}
-		}, [user]);
 
 		const handleChange = (e) => {
 			setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -117,10 +86,6 @@ const UserModal = forwardRef(
 					role: "user",
 					isVerified: false,
 				});
-				setKtp("");
-				setPreviewKtp("");
-				setTandaTangan("");
-				setPreviewTtd("");
 			}
 		}, [isOpen]);
 
@@ -131,8 +96,6 @@ const UserModal = forwardRef(
 			Object.keys(formData).forEach((key) => {
 				uploadData.append(key, formData[key]);
 			});
-			uploadData.append("foto_ktp", ktp);
-			uploadData.append("tanda_tangan", tandaTangan);
 
 			console.log("Submitting Data:", Object.fromEntries(uploadData));
 
@@ -337,77 +300,6 @@ const UserModal = forwardRef(
 									<label htmlFor="kelas">Kelas</label>
 								</FloatLabel>
 							</div>
-
-							{/* <div className="md:flex align-items-center gap-4 mb-4 mt-6">
-								<div className="flex-1 fadeinleft animation-duration-500 md:mt-0 mt-6 border-round-xl shadow-4 max-h-20rem  flex  flex-column justify-content-between align-items-center">
-									{previewKtp && (
-										<div className="image w-12 p-2 overflow-hidden">
-											<Image
-												src={previewKtp}
-												alt="Image"
-												preview
-												pt={{
-													image: {
-														style: {
-															width: "100%",
-															height: "auto",
-															objectFit: "cover",
-														},
-													},
-												}}
-											/>
-										</div>
-									)}
-									<div className="control w-full ">
-										<div className="file">
-											<label className="file-label">
-												<input
-													type="file"
-													className="file-input"
-													onChange={loadImageKtp}
-												/>
-												<span className="file-cta">
-													<span>Pilih Foto Ktp</span>
-												</span>
-											</label>
-										</div>
-									</div>
-								</div>
-								<div className="flex-1 fadeinright animation-duration-500 md:mt-0 mt-6 border-round-xl shadow-4 max-h-20rem  flex  flex-column justify-content-between align-items-center">
-									{previewKtp && (
-										<div className="image w-12 p-2 overflow-hidden">
-											<Image
-												src={previewTtd}
-												alt="Image"
-												preview
-												pt={{
-													image: {
-														style: {
-															width: "100%",
-															height: "auto",
-															objectFit: "cover",
-														},
-													},
-												}}
-											/>
-										</div>
-									)}
-									<div className="control w-full ">
-										<div className="file">
-											<label className="file-label">
-												<input
-													type="file"
-													className="file-input"
-													onChange={loadImageTtd}
-												/>
-												<span className="file-cta">
-													<span>Pilih Foto Tanda Tangan</span>
-												</span>
-											</label>
-										</div>
-									</div>
-								</div>
-							</div> */}
 							{isNew && (
 								<div className="field">
 									<FloatLabel className=" mb-4 mt-6 w-12 fadeinright animation-duration-500  ">
@@ -520,10 +412,6 @@ const UserModal = forwardRef(
 							<div className="field">
 								<label className="label">Role</label>
 								<span className="input is-static">{formData.role}</span>
-							</div>
-							<div className="field">
-								<label className="label">Foto Ktp</label>
-								<img class=" image is-128x128" src={formData.url_foto_ktp} />
 							</div>
 
 							<div className="field">

@@ -8,7 +8,7 @@ import axios from "axios";
 import { NavLink } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import { Divider } from "primereact/divider";
-import logo from "frontend/src/assets/images/logo.png";
+import logo from "../../assets/images/logo.png";
 
 const ResetPassword = () => {
 	const toast = useRef(null);

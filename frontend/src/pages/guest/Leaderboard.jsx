@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import useSWR from "swr";
 import { Dropdown } from "primereact/dropdown";
 import "primeflex/primeflex.css";
-import profilePict from '../../assets/images/profile-picture.png';
+import profilePict from "../../assets/images/profile-picture.png";
 
 // fetcher SWR
 const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -31,28 +31,28 @@ const Leaderboard = () => {
 		data?.map((item) => {
 			if (activeButton === "Account") {
 				return {
-          id: item.id,
-          name: item.name,
-          username: item.nama_akun || '-',
-          avatar: item.url_foto_profile || profilePict,
-          like: safeNumber(item.totalLikes),
-          comment: safeNumber(item.totalComments),
-          view: safeNumber(item.totalViews),
-          nilai: safeNumber(item.totalScore),
-        };
+					id: item.id,
+					name: item.name,
+					username: item.nama_akun || "-",
+					avatar: item.url_foto_profile || profilePict,
+					like: safeNumber(item.totalLikes),
+					comment: safeNumber(item.totalComments),
+					view: safeNumber(item.totalViews),
+					nilai: safeNumber(item.totalScore),
+				};
 			} else {
 				const user = item.user || {};
 				return {
-          id: item.id,
-          name: user.name || 'Unknown',
-          username: user.nama_akun || '-',
-          avatar: user.url_foto_profile || profilePict,
-          like: safeNumber(item.likes),
-          comment: safeNumber(item.comments),
-          view: safeNumber(item.video_views),
-          nilai: safeNumber(item.score),
-          url_postingan: item.url_postingan,
-        };
+					id: item.id,
+					name: user.name || "Unknown",
+					username: user.nama_akun || "-",
+					avatar: user.url_foto_profile || profilePict,
+					like: safeNumber(item.likes),
+					comment: safeNumber(item.comments),
+					view: safeNumber(item.video_views),
+					nilai: safeNumber(item.score),
+					url_postingan: item.url_postingan,
+				};
 			}
 		}) || [];
 
@@ -167,74 +167,86 @@ const Leaderboard = () => {
 					</div>
 
 					{/* Table Detail */}
-					<div className=" bg-gray-900/70 border-round-xl p-0 overflow-hidden container-table-detail">
-						<div className="lead-table-container">
-							<div className="lead-table-detail">
-								{/* Header */}
-								<div className="lead-table-row bg-gray-800 text-gray-300 text-xs md:text-sm font-semibold">
-									<div className="lead-table-header col-rank">Rank</div>
-									<div className="lead-table-header col-name">Nama</div>
-									<div className="lead-table-header col-username">Username</div>
-									<div className="lead-table-header col-number">Like</div>
-									<div className="lead-table-header col-number">Comment</div>
-									<div className="lead-table-header col-number">View</div>
-									<div className="lead-table-header col-score">Nilai</div>
-									{activeButton === "Post" && (
-										<div className="lead-table-header col-link">Link</div>
-									)}
-								</div>
-
-								{/* Rows */}
-								{sortedData.map((user, index) => (
-									<div
-										key={user.id}
-										className="lead-table-row bg-gray-900 hover:bg-gray-800 transition-colors"
-									>
-										<div className="lead-table-cell col-rank font-semibold text-xs md:text-sm">
-											{index + 1}
+					{/* Rows */}
+					{sortedData.length === 0 ? (
+						<div className="flex w-12 justify-content-center text-center">
+							<h2 className="text-3xl md:text-7xl mb-4">
+								Leaderboard belum ada nih, <br />
+								Tunggu nanti ya!
+							</h2>
+						</div>
+					) : (
+						<div className=" bg-gray-900/70 border-round-xl p-0 overflow-hidden container-table-detail">
+							<div className="lead-table-container">
+								<div className="lead-table-detail">
+									{/* Header */}
+									<div className="lead-table-row bg-gray-800 text-gray-300 text-xs md:text-sm font-semibold">
+										<div className="lead-table-header col-rank">Rank</div>
+										<div className="lead-table-header col-name">Nama</div>
+										<div className="lead-table-header col-username">
+											Username
 										</div>
-										<div
-											className="lead-table-cell col-name text-xs md:text-sm"
-											title={user.name}
-										>
-											{user.name}
-										</div>
-										<div
-											className="lead-table-cell col-username text-gray-400 text-xs"
-											title={user.username}
-										>
-											@{user.username}
-										</div>
-										<div className="lead-table-cell col-number text-xs md:text-sm">
-											{user.like.toLocaleString()}
-										</div>
-										<div className="lead-table-cell col-number text-xs md:text-sm">
-											{user.comment.toLocaleString()}
-										</div>
-										<div className="lead-table-cell col-number text-xs md:text-sm">
-											{user.view.toLocaleString()}
-										</div>
-										<div className="lead-table-cell col-score text-xs md:text-sm">
-											{user.nilai.toLocaleString()}
-										</div>
+										<div className="lead-table-header col-number">Like</div>
+										<div className="lead-table-header col-number">Comment</div>
+										<div className="lead-table-header col-number">View</div>
+										<div className="lead-table-header col-score">Nilai</div>
 										{activeButton === "Post" && (
-											<div className="lead-table-cell col-link">
-												<a
-													href={user.url_postingan}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="text-blue-400 hover:underline text-xs"
-													title="Buka postingan"
-												>
-													Link
-												</a>
-											</div>
+											<div className="lead-table-header col-link">Link</div>
 										)}
 									</div>
-								))}
+
+									{/* Rows */}
+									{sortedData.map((user, index) => (
+										<div
+											key={user.id}
+											className="lead-table-row bg-gray-900 hover:bg-gray-800 transition-colors"
+										>
+											<div className="lead-table-cell col-rank font-semibold text-xs md:text-sm">
+												{index + 1}
+											</div>
+											<div
+												className="lead-table-cell col-name text-xs md:text-sm"
+												title={user.name}
+											>
+												{user.name}
+											</div>
+											<div
+												className="lead-table-cell col-username text-gray-400 text-xs"
+												title={user.username}
+											>
+												@{user.username}
+											</div>
+											<div className="lead-table-cell col-number text-xs md:text-sm">
+												{user.like.toLocaleString()}
+											</div>
+											<div className="lead-table-cell col-number text-xs md:text-sm">
+												{user.comment.toLocaleString()}
+											</div>
+											<div className="lead-table-cell col-number text-xs md:text-sm">
+												{user.view.toLocaleString()}
+											</div>
+											<div className="lead-table-cell col-score text-xs md:text-sm">
+												{user.nilai.toLocaleString()}
+											</div>
+											{activeButton === "Post" && (
+												<div className="lead-table-cell col-link">
+													<a
+														href={user.url_postingan}
+														target="_blank"
+														rel="noopener noreferrer"
+														className="text-blue-400 hover:underline text-xs"
+														title="Buka postingan"
+													>
+														Link
+													</a>
+												</div>
+											)}
+										</div>
+									))}
+								</div>
 							</div>
 						</div>
-					</div>
+					)}
 				</div>
 			</div>
 		</>

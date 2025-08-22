@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dropdown } from "primereact/dropdown";
@@ -8,7 +7,6 @@ import { Button } from "primereact/button";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { Skeleton } from "primereact/skeleton";
-import { Tooltip } from "primereact/tooltip";
 
 const UserTable = ({
 	users,

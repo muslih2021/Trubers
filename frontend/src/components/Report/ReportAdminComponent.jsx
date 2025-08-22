@@ -23,7 +23,6 @@ import { Dropdown } from "primereact/dropdown";
 import { Tag } from "primereact/tag";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import ReportAdminFormModal from "./ReportAdminFormModal";
-import { NavLink } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL_BACKEND;
 const fetcher = async (url) => (await axios.get(url)).data;
@@ -263,6 +262,7 @@ const ReportAdminComponent = () => {
 		{ field: "user.name", header: "User", sortable: true },
 		{
 			field: "status",
+			header: "Status",
 		},
 		{ field: "Actions", header: "Actions" },
 		{

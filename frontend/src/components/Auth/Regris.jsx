@@ -7,12 +7,8 @@ import { FloatLabel } from "primereact/floatlabel";
 import { Password } from "primereact/password";
 import { Link } from "react-router-dom";
 import { Divider } from "primereact/divider";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Toast } from "primereact/toast";
-import { FileUpload } from "primereact/fileupload";
-import { InputMask } from "primereact/inputmask";
 import axios from "axios";
-import { showToast } from "../../features/toastSlice";
 import { showDialog } from "../../features/dialogSlice";
 import { useDispatch } from "react-redux";
 import { Dropdown } from "primereact/dropdown";
@@ -40,16 +36,6 @@ const Regis = () => {
 	const [loading, setLoading] = useState(false);
 
 	const API_URL = import.meta.env.VITE_API_URL_BACKEND;
-
-	const loadImageKtp = (event) => {
-		if (event.files && event.files.length > 0) {
-			const file = event.files[0];
-			setKtp(file);
-			console.log("File KTP berhasil dipilih:", file);
-		} else {
-			console.log("Tidak ada file yang dipilih.");
-		}
-	};
 
 	const saveUser = async (e) => {
 		e.preventDefault();

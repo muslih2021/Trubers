@@ -8,9 +8,6 @@ import { Password } from "primereact/password";
 import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
 import { Toast } from "primereact/toast";
-import { InputMask } from "primereact/inputmask";
-import { Image } from "primereact/image";
-import { Dropdown } from "primereact/dropdown";
 import {
 	updateMe,
 	getMe,
@@ -21,9 +18,6 @@ import {
 import { InputSwitch } from "primereact/inputswitch";
 import axios from "axios";
 import { Accordion, AccordionTab } from "primereact/accordion";
-import { OverlayPanel } from "primereact/overlaypanel";
-import tolakGif from "../assets/images/tolak.gif";
-import izinkanGif from "../assets/images/izinkan.gif";
 
 const API_URL = import.meta.env.VITE_API_URL_BACKEND;
 
@@ -552,77 +546,7 @@ const ProfileComponent = () => {
 								</label>
 							</FloatLabel>
 						</div>
-						{/* <div className="flex-1 md:mt-0 mt-6 border-round-xl shadow-4 max-h-20rem  flex  flex-column justify-content-between align-items-center">
-							{previewKtp && (
-								<div className="image w-12 p-2 overflow-hidden">
-									<Image
-										src={previewKtp}
-										alt="Image"
-										preview
-										pt={{
-											image: {
-												style: {
-													width: "100%",
-													height: "auto",
-													objectFit: "cover",
-												},
-											},
-										}}
-									/>
-								</div>
-							)}
-							<div className="control w-full ">
-								<div className="file">
-									<label className="file-label">
-										<input
-											type="file"
-											className="file-input"
-											onChange={(e) => loadImage(e, setKtp, setPreviewKtp)}
-										/>
-										<span className="file-cta">
-											<span>Pilih Foto Ktp</span>
-										</span>
-									</label>
-								</div>
-							</div>
-						</div> */}
 					</div>
-					{/* <h3
-						style={{ color: "var(--surface-500)" }}
-						className="mb-0 md:mt-6 my-6 "
-					>
-						Tanda Tangan
-					</h3> */}
-					{/* <div className="xl:flex   align-items-center gap-4">
-						<SignatureComponent
-							onSave={(data) => {
-								setTandaTangan(data);
-								setPreviewTtd(data);
-							}}
-						/>
-						<div className="flex-1 md:mt-6 xl:mt-0 mt-8 border-round-xl shadow-4 max-h-20rem  flex  flex-column justify-content-between align-items-center ">
-							{previewTtd && (
-								<div className="tanda_tangan p-2 flex justify-content-center  overflow-hidden ">
-									<Image
-										src={previewTtd}
-										alt="Preview Tanda Tangan"
-										className=""
-										preview
-									/>
-								</div>
-							)}
-							<label className="file-label w-full">
-								<input
-									type="file"
-									className="file-input"
-									onChange={(e) => loadImage(e, setTandaTangan, setPreviewTtd)}
-								/>
-								<span className="file-cta md:py-2">
-									<span>Upload Tanda Tangan</span>
-								</span>
-							</label>
-						</div>
-					</div> */}
 
 					<div className="md:mt-8 md:py-5  py-3 flex justify-content-center md:justify-content-end">
 						<Button
@@ -729,86 +653,6 @@ const ProfileComponent = () => {
 								/>
 							</div>
 						</div>
-						{/* <div className="flex align-items-center  justify-content-between ">
-							<label className="label text-md">
-								Notifikasi Lewat Google Chrome
-							</label>
-							<div className="control ">
-								<InputSwitch
-									checked={subscribed}
-									onChange={async (e) => {
-										lastEventRef.current = e.originalEvent; // simpan event untuk overlay
-										if (e.value) {
-											await subscribeManually();
-										} else {
-											setOverlayContent("unsubscribe");
-											op.current.toggle(e.originalEvent); // overlay konfirmasi unsubscribe
-										}
-									}}
-								/>
-								<OverlayPanel className="w-3" ref={op}>
-									{overlayContent === "unsubscribe" ? (
-										<div className="p-3 align-items-center flex flex-column text-center">
-											<div
-												style={{
-													width: "142px",
-													height: "320px",
-													overflow: "hidden",
-													borderRadius: "8px",
-													display: "flex",
-													justifyContent: "center",
-													alignItems: "center",
-												}}
-											>
-												<img
-													src={tolakGif}
-													alt="Izin Ditolak"
-													style={{
-														width: "100%",
-														height: "100%",
-														objectFit: "cover",
-													}}
-													loading="lazy"
-												/>
-											</div>
-											<p className="mb-2">
-												Untuk menonaktifkan notifikasi, silakan buka pengaturan
-												browser Anda.
-											</p>
-										</div>
-									) : (
-										<div className="p-3  flex flex-column align-items-center text-center">
-											<div
-												style={{
-													width: "142px",
-													height: "320px",
-													overflow: "hidden",
-													borderRadius: "8px",
-													display: "flex",
-													justifyContent: "center",
-													alignItems: "center",
-												}}
-											>
-												<img
-													src={izinkanGif}
-													alt="Izin Ditolak"
-													style={{
-														width: "100%",
-														height: "100%",
-														objectFit: "cover",
-													}}
-													loading="lazy"
-												/>
-											</div>
-											<p>
-												Silakan aktifkan izin notifikasi di pengaturan browser
-												Anda.
-											</p>
-										</div>
-									)}
-								</OverlayPanel>
-							</div>
-						</div> */}
 					</div>
 				</AccordionTab>
 			</Accordion>
