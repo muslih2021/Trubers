@@ -90,59 +90,6 @@ export const getUserById = async (req, res) => {
 		console.log(error.massage);
 	}
 };
-
-// export const createUser = async (req, res) => {
-// 	const { name, email, password, confPassword, role, linkmedsos } = req.body;
-
-// 	if (password !== confPassword)
-// 		return res
-// 			.status(400)
-// 			.json({ msg: "password dan Confirm password tidak sama" });
-
-// 	const hashPassword = await argon2.hash(password);
-// 	let urlTtd = "",
-// 		fileNameTtd = "";
-
-// 	// Handle upload tanda tangan
-// 	if (req.files && req.files.tanda_tangan) {
-// 		const file = req.files.tanda_tangan;
-// 		const ext = path.extname(file.name).toLowerCase();
-// 		const currentDate = new Date();
-// 		const dateString = currentDate.toISOString().split("T")[0];
-// 		const timeString = currentDate
-// 			.toTimeString()
-// 			.split(" ")[0]
-// 			.replace(/:/g, "-");
-// 		fileNameTtd = `${dateString}-${timeString}-${file.md5}${ext}`;
-// 		urlTtd = `${req.protocol}://${req.get("host")}/images/${fileNameTtd}`;
-
-// 		if (![".png", ".jpg", ".jpeg"].includes(ext)) {
-// 			return res.status(422).json({ msg: "File tanda tangan tidak valid" });
-// 		}
-// 		if (file.data.length > 5000000) {
-// 			return res.status(422).json({ msg: "File harus lebih kecil dari 5 MB" });
-// 		}
-// 		await file.mv(`./public/images/${fileNameTtd}`, (err) => {
-// 			if (err) return res.status(500).json({ msg: err.message });
-// 		});
-// 	}
-
-// 	try {
-// 		await User.create({
-// 			name,
-// 			email,
-// 			password: hashPassword,
-// 			role,
-// 			linkmedsos,
-// 			tanda_tangan: fileNameTtd,
-// 			url_tanda_tangan: urlTtd,
-// 		});
-// 		res.status(201).json({ msg: "Berhasil" });
-// 	} catch (error) {
-// 		console.log(error.message);
-// 		res.status(400).json({ msg: error.message });
-// 	}
-// };
 export const createUser = async (req, res) => {
 	const {
 		name,
@@ -185,32 +132,6 @@ export const createUser = async (req, res) => {
 		if (typeof isVerified !== "undefined") verified = isVerified; // admin bisa atur isVerified
 	}
 
-	// 5️⃣ Handle upload tanda tangan
-	let urlTtd = "",
-		fileNameTtd = "";
-	if (req.files && req.files.tanda_tangan) {
-		const file = req.files.tanda_tangan;
-		const ext = path.extname(file.name).toLowerCase();
-		const currentDate = new Date();
-		const dateString = currentDate.toISOString().split("T")[0];
-		const timeString = currentDate
-			.toTimeString()
-			.split(" ")[0]
-			.replace(/:/g, "-");
-		fileNameTtd = `${dateString}-${timeString}-${file.md5}${ext}`;
-		urlTtd = `${req.protocol}://${req.get("host")}/images/${fileNameTtd}`;
-
-		if (![".png", ".jpg", ".jpeg"].includes(ext)) {
-			return res.status(422).json({ msg: "File tanda tangan tidak valid" });
-		}
-		if (file.data.length > 5000000) {
-			return res.status(422).json({ msg: "File harus lebih kecil dari 5 MB" });
-		}
-		await file.mv(`./public/images/${fileNameTtd}`, (err) => {
-			if (err) return res.status(500).json({ msg: err.message });
-		});
-	}
-
 	// 6️⃣ Buat user baru
 	try {
 		await User.create({
@@ -219,8 +140,6 @@ export const createUser = async (req, res) => {
 			password: hashPassword,
 			role: userRole,
 			linkmedsos,
-			tanda_tangan: fileNameTtd,
-			url_tanda_tangan: urlTtd,
 			isVerified: verified,
 			sosmed_utama,
 			nama_akun,
@@ -230,7 +149,7 @@ export const createUser = async (req, res) => {
 			sekolah,
 			kelas,
 		});
-		res.status(201).json({ msg: "Berhasil membuat user" });
+		res.status(201).json({ msg: "Berhasil" });
 	} catch (error) {
 		console.log(error.message);
 		res.status(400).json({ msg: error.message });
@@ -273,73 +192,6 @@ export const updateUser = async (req, res) => {
 		hashPassword = await argon2.hash(password);
 	}
 
-	let fileNameTtd = user.tanda_tangan;
-	let urlTtd = user.url_tanda_tangan;
-	let fileNameKtp = user.foto_ktp;
-	let urlKtp = user.url_foto_ktp;
-
-	if (req.files && req.files.tanda_tangan) {
-		const file = req.files.tanda_tangan;
-		const ext = path.extname(file.name).toLowerCase();
-		const currentDate = new Date();
-		const dateString = currentDate.toISOString().split("T")[0];
-		const timeString = currentDate
-			.toTimeString()
-			.split(" ")[0]
-			.replace(/:/g, "-");
-		fileNameTtd = `${dateString}-${timeString}-${file.md5}${ext}`;
-		urlTtd = `${req.protocol}://${req.get("host")}/images/${fileNameTtd}`;
-
-		if (![".png", ".jpg", ".jpeg"].includes(ext)) {
-			return res.status(422).json({ msg: "File tanda tangan tidak valid" });
-		}
-		if (file.data.length > 5000000) {
-			return res.status(422).json({ msg: "File harus lebih kecil dari 5 MB" });
-		}
-
-		if (user.tanda_tangan) {
-			const oldFilePath = `./public/images/${user.tanda_tangan}`;
-			if (fs.existsSync(oldFilePath)) {
-				fs.unlinkSync(oldFilePath);
-			}
-		}
-
-		await file.mv(`./public/images/${fileNameTtd}`, (err) => {
-			if (err) return res.status(500).json({ msg: err.message });
-		});
-	}
-
-	if (req.files && req.files.foto_ktp) {
-		const file = req.files.foto_ktp;
-		const ext = path.extname(file.name).toLowerCase();
-		const currentDate = new Date();
-		const dateString = currentDate.toISOString().split("T")[0];
-		const timeString = currentDate
-			.toTimeString()
-			.split(" ")[0]
-			.replace(/:/g, "-");
-		fileNameKtp = `${dateString}-${timeString}-${file.md5}${ext}`;
-		urlKtp = `${req.protocol}://${req.get("host")}/images/${fileNameKtp}`;
-
-		if (![".png", ".jpg", ".jpeg"].includes(ext)) {
-			return res.status(422).json({ msg: "File KTP tidak valid" });
-		}
-		if (file.data.length > 5000000) {
-			return res.status(422).json({ msg: "File harus lebih kecil dari 5 MB" });
-		}
-
-		if (user.foto_ktp) {
-			const oldFilePath = `./public/images/${user.foto_ktp}`;
-			if (fs.existsSync(oldFilePath)) {
-				fs.unlinkSync(oldFilePath);
-			}
-		}
-
-		await file.mv(`./public/images/${fileNameKtp}`, (err) => {
-			if (err) return res.status(500).json({ msg: err.message });
-		});
-	}
-
 	try {
 		await User.update(
 			{
@@ -349,10 +201,6 @@ export const updateUser = async (req, res) => {
 				isVerified,
 				role,
 				linkmedsos,
-				tanda_tangan: fileNameTtd,
-				url_tanda_tangan: urlTtd,
-				foto_ktp: fileNameKtp,
-				url_foto_ktp: urlKtp,
 				sosmed_utama,
 				nama_akun,
 				jumlah_follower_terakhir,
@@ -382,13 +230,6 @@ export const deleteUser = async (req, res) => {
 	});
 	if (!user) return res.status(404).json({ msg: "User tidak di temukan" });
 	try {
-		if (user.foto_ktp) {
-			const filepath = `./public/images/${user.foto_ktp}`;
-
-			if (fs.existsSync(filepath)) {
-				fs.unlinkSync(filepath);
-			}
-		}
 		await User.destroy({
 			where: {
 				id: user.id,
@@ -481,24 +322,6 @@ export const deleteManyUsers = async (req, res) => {
 		if (!Array.isArray(ids)) {
 			return res.status(400).json({ msg: "Format data tidak valid" });
 		}
-
-		const users = await User.findAll({ where: { uuid: ids } });
-
-		for (const user of users) {
-			if (user.foto_ktp) {
-				const filepath = `./public/images/${user.foto_ktp}`;
-				if (fs.existsSync(filepath)) {
-					fs.unlinkSync(filepath);
-				}
-			}
-			if (user.tanda_tangan) {
-				const filepath = `./public/images/${user.tanda_tangan}`;
-				if (fs.existsSync(filepath)) {
-					fs.unlinkSync(filepath);
-				}
-			}
-		}
-
 		await User.destroy({
 			where: {
 				uuid: ids,

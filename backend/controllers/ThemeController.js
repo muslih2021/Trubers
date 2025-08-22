@@ -1,17 +1,4 @@
 import Theme from "../models/ThemeModel.js";
-
-// export const getActiveThemes = async (req, res) => {
-// 	try {
-// 		const themes = await Theme.findAll({
-// 			where: { status: "aktif" },
-// 			order: [["id", "ASC"]],
-// 		});
-// 		res.json({ msg: "Success", data: themes });
-// 	} catch (error) {
-// 		console.error(error);
-// 		res.status(500).json({ msg: "Gagal mengambil tema aktif" });
-// 	}
-// };
 import { Op } from "sequelize";
 
 export const getActiveThemes = async (req, res) => {

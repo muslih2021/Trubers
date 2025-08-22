@@ -6,7 +6,6 @@ import webpush from "web-push";
 import Subscription from "../models/SubscriptionModel.js";
 import { sendEmail } from "./emailService.js";
 import { v4 as uuidv4 } from "uuid";
-import RiwayatSurat from "../models/RiwayatSuratModel.js";
 import { getTiktokData, getInstagramData } from "./scraper.js";
 import { downloadImage } from "./downloadHelper.js";
 import fs from "fs";
@@ -155,13 +154,6 @@ export const getContentReportById = async (req, res) => {
 				.json({ msg: "Anda tidak berhak mengakses surat ini." });
 		}
 
-		// Riwayat content
-		const riwayat = await RiwayatSurat.findAll({
-			where: { pengajuan_surat_id: pengajuan.id },
-			include: [{ model: User, attributes: ["name", "email"] }],
-			order: [["tgl_perubahan", "DESC"]],
-		});
-
 		res.json({
 			id: pengajuan.id,
 			uuid: pengajuan.uuid,
@@ -176,162 +168,12 @@ export const getContentReportById = async (req, res) => {
 			alasan: pengajuan.alasan,
 			themeId: pengajuan.themeId,
 			user: pengajuan.user,
-			riwayat,
 		});
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ msg: "Terjadi kesalahan pada server." });
 	}
 };
-
-// export const createContentReport = async (req, res) => {
-// 	// const { detail } = req.body;
-// 	const { url_postingan, detail } = req.body;
-// 	const userPembuat = await User.findOne({ where: { id: req.userId } });
-
-// 	try {
-// 		// Tentukan status: semua pengajuan baru jadi "belum"
-// 		const statusPengajuan = "belum";
-// 		let scrapingData = null;
-// 		let urlThumbnail = null;
-// 		let likes = 0;
-// 		let comments = 0;
-// 		let video_views = 0;
-// 		let description_caption = 0;
-
-// 		if (url_postingan.includes("instagram.com")) {
-// 			scrapingData = await getInstagramData(url_postingan);
-// 			likes = scrapingData.like_count || 0;
-// 			comments = scrapingData.comment_count || 0;
-// 			video_views = scrapingData.video_play_count || 0;
-// 			description_caption = scrapingData.caption || null;
-// 			if (scrapingData.thumbnail_src) {
-// 				urlThumbnail = await downloadImage(scrapingData.thumbnail_src, req);
-// 			}
-// 		} else if (
-// 			url_postingan.includes("tiktok.com") ||
-// 			url_postingan.includes("vt.tiktok.com")
-// 		) {
-// 			scrapingData = await getTiktokData(url_postingan);
-// 			likes = scrapingData.digg_count || 0;
-// 			comments = scrapingData.comment_count || 0;
-// 			video_views = scrapingData.play_count || 0;
-// 			description_caption = scrapingData.desc || null;
-
-// 			if (scrapingData.cover) {
-// 				urlThumbnail = await downloadImage(scrapingData.cover, req);
-// 			}
-// 		}
-
-// 		// Buat pengajuan surat langsung
-// 		const pengajuan = await ContentReport.create({
-// 			uuid: uuidv4(),
-// 			userId: req.userId,
-// 			status: statusPengajuan,
-// 			url_postingan: req.body.url_postingan,
-// 			likes,
-// 			comments,
-// 			description_caption,
-// 			video_views,
-// 			detail,
-// 			url_display_foto: urlThumbnail,
-// 		});
-
-// 		// Buat riwayat
-// 		await RiwayatSurat.create({
-// 			pengajuan_surat_id: pengajuan.id,
-// 			user_id: req.userId,
-// 			status: pengajuan.status,
-// 			keterangan: `Pengajuan dibuat oleh ${userPembuat?.name || "User"}`,
-// 			tgl_perubahan: new Date(),
-// 		});
-// 		res.status(201).json({
-// 			msg: "Berhasil",
-// 			pengajuan,
-// 		});
-
-// 		// Cari target notifikasi
-// 		const targetList =
-// 			req.role === "admin"
-// 				? await User.findAll({
-// 						where: { role: "kepalaDesa" },
-// 						include: [{ model: Subscription, as: "subscriptions" }],
-// 				  })
-// 				: await User.findAll({
-// 						where: { role: "admin" },
-// 						include: [{ model: Subscription, as: "subscriptions" }],
-// 				  });
-
-// 		const allSubscriptions = targetList.flatMap(
-// 			(user) => user.subscriptions || []
-// 		);
-
-// 		// Payload notifikasi push
-// 		const payload = JSON.stringify({
-// 			title: "Update Pengajuan Surat",
-// 			body: "Pengajuan surat telah dibuat.",
-// 			url: `${process.env.URL_FRONTEND}/riwayat-surat/${pengajuan.uuid}`,
-// 		});
-
-// 		// Kirim notifikasi push
-// 		await Promise.all(
-// 			allSubscriptions.map(async (sub) => {
-// 				try {
-// 					await webpush.sendNotification(
-// 						{
-// 							endpoint: sub.endpoint,
-// 							expirationTime: sub.expirationTime,
-// 							keys: {
-// 								p256dh: sub.p256dh,
-// 								auth: sub.auth,
-// 							},
-// 						},
-// 						payload
-// 					);
-// 					console.log("✅ Notifikasi dikirim ke userId:", sub.userId);
-// 				} catch (err) {
-// 					console.error("❌ Gagal kirim notifikasi:", err);
-// 				}
-// 			})
-// 		);
-
-// 		// Kirim email notifikasi
-// 		const userPengubah = await User.findOne({ where: { id: req.userId } });
-
-// 		await Promise.all(
-// 			targetList
-// 				.filter((u) => u.email && u.email_notifikasi)
-// 				.map(async (userTarget) => {
-// 					const emailHtml = `
-// 						<div style="font-family: Arial; line-height: 1.6;">
-// 							<h2>Pengajuan surat baru dari ${userPengubah?.name || "User"}</h2>
-// 							<p>Halo ${userTarget.name},</p>
-// 							<p>Surat baru telah diajukan dan menunggu tindakan Anda.</p>
-// 							<p>
-// 								<a href="${process.env.URL_FRONTEND}/riwayat-surat/${pengajuan.uuid}"
-// 									style="background:#2196F3;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;">
-// 									Tinjau Surat
-// 								</a>
-// 							</p>
-// 						</div>
-// 					`;
-// 					try {
-// 						await sendEmail(
-// 							userTarget.email,
-// 							"Pengajuan Surat Baru",
-// 							emailHtml
-// 						);
-// 						console.log("📧 Email terkirim ke:", userTarget.email);
-// 					} catch (err) {
-// 						console.error("❌ Gagal kirim email ke:", userTarget.email, err);
-// 					}
-// 				})
-// 		);
-// 	} catch (error) {
-// 		console.error("Error saat membuat pengajuan surat:", error);
-// 		res.status(500).json({ msg: "Terjadi kesalahan saat membuat pengajuan" });
-// 	}
-// };
 
 export const createContentReport = async (req, res) => {
 	const { url_postingan, detail, themeId } = req.body;
@@ -405,15 +247,6 @@ export const createContentReport = async (req, res) => {
 			detail,
 			url_display_foto: urlThumbnail,
 			themeId: selectedTheme.id, // simpan tema
-		});
-
-		// Buat riwayat
-		await RiwayatSurat.create({
-			pengajuan_surat_id: pengajuan.id,
-			user_id: req.userId,
-			status: pengajuan.status,
-			keterangan: `Pengajuan dibuat oleh ${userPembuat?.name || "User"}`,
-			tgl_perubahan: new Date(),
 		});
 
 		res.status(201).json({ msg: "Berhasil", pengajuan });
@@ -533,15 +366,6 @@ export const updateContentReportById = async (req, res) => {
 			status: "dinilai", // perbaikan di sini
 		});
 
-		// Buat riwayat perubahan
-		await RiwayatSurat.create({
-			pengajuan_surat_id: pengajuan.id,
-			user_id: req.userId,
-			status: "dinilai",
-			keterangan: `Pengajuan surat diperbarui oleh ${req.userName || "User"}`,
-			tgl_perubahan: new Date(),
-		});
-
 		res.status(200).json({
 			msg: "Pengajuan surat berhasil diperbarui",
 			pengajuan,
@@ -627,9 +451,6 @@ export const deleteContentReport = async (req, res) => {
 
 		// Hapus data report
 		await ContentReport.destroy({ where: { id: report.id } });
-
-		// Opsional: hapus juga riwayat
-		await RiwayatSurat.destroy({ where: { pengajuan_surat_id: report.id } });
 
 		res.status(200).json({ msg: "Postingan berhasil dihapus" });
 	} catch (error) {
@@ -768,7 +589,7 @@ export const getAllUsersWithContents = async (req, res) => {
 						"video_views",
 						"score",
 					],
-					required: false, // LEFT JOIN
+					required: false,
 				},
 			],
 			group: ["users.id"],

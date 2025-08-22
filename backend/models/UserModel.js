@@ -86,22 +86,6 @@ const User = db.define(
 			type: DataTypes.STRING,
 			allowNull: true,
 		},
-		tanda_tangan: {
-			type: DataTypes.STRING,
-			allowNull: true,
-		},
-		url_tanda_tangan: {
-			type: DataTypes.STRING,
-			allowNull: true,
-		},
-		foto_ktp: {
-			type: DataTypes.STRING,
-			allowNull: true,
-		},
-		url_foto_ktp: {
-			type: DataTypes.STRING,
-			allowNull: true,
-		},
 		foto_profile: {
 			type: DataTypes.STRING,
 			allowNull: true,

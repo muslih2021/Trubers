@@ -48,10 +48,6 @@ export const Me = async (req, res) => {
 			"email",
 			"linkmedsos",
 			"role",
-			"foto_ktp",
-			"url_foto_ktp",
-			"tanda_tangan",
-			"url_tanda_tangan",
 			"foto_profile",
 			"url_foto_profile",
 			"email_notifikasi",
@@ -97,80 +93,8 @@ export const updateMe = async (req, res) => {
 
 		const { name, email, linkmedsos } = req.body;
 
-		let fileNameTtd = user.tanda_tangan;
-		let urlTtd = user.url_tanda_tangan;
-		let fileNameKtp = user.foto_ktp;
-		let urlKtp = user.url_foto_ktp;
 		let fileNameProfile = user.foto_profile;
 		let urlProfile = user.url_foto_profile;
-
-		// Upload Tanda Tangan
-		if (req.files && req.files.tanda_tangan) {
-			const file = req.files.tanda_tangan;
-			const ext = path.extname(file.name).toLowerCase();
-			const currentDate = new Date();
-			const dateString = currentDate.toISOString().split("T")[0];
-			const timeString = currentDate
-				.toTimeString()
-				.split(" ")[0]
-				.replace(/:/g, "-");
-			fileNameTtd = `${dateString}-${timeString}-${file.md5}${ext}`;
-			urlTtd = `${req.protocol}://${req.get("host")}/images/${fileNameTtd}`;
-
-			if (![".png", ".jpg", ".jpeg"].includes(ext)) {
-				return res.status(422).json({ msg: "File tanda tangan tidak valid" });
-			}
-			if (file.data.length > 5000000) {
-				return res
-					.status(422)
-					.json({ msg: "File harus lebih kecil dari 5 MB" });
-			}
-
-			if (user.tanda_tangan) {
-				const oldFilePath = `./public/images/${user.tanda_tangan}`;
-				if (fs.existsSync(oldFilePath)) {
-					fs.unlinkSync(oldFilePath);
-				}
-			}
-
-			await file.mv(`./public/images/${fileNameTtd}`, (err) => {
-				if (err) return res.status(500).json({ msg: err.message });
-			});
-		}
-
-		// Upload Foto KTP
-		if (req.files && req.files.foto_ktp) {
-			const file = req.files.foto_ktp;
-			const ext = path.extname(file.name).toLowerCase();
-			const currentDate = new Date();
-			const dateString = currentDate.toISOString().split("T")[0];
-			const timeString = currentDate
-				.toTimeString()
-				.split(" ")[0]
-				.replace(/:/g, "-");
-			fileNameKtp = `${dateString}-${timeString}-${file.md5}${ext}`;
-			urlKtp = `${req.protocol}://${req.get("host")}/images/${fileNameKtp}`;
-
-			if (![".png", ".jpg", ".jpeg"].includes(ext)) {
-				return res.status(422).json({ msg: "File KTP tidak valid" });
-			}
-			if (file.data.length > 5000000) {
-				return res
-					.status(422)
-					.json({ msg: "File harus lebih kecil dari 5 MB" });
-			}
-
-			if (user.foto_ktp) {
-				const oldFilePath = `./public/images/${user.foto_ktp}`;
-				if (fs.existsSync(oldFilePath)) {
-					fs.unlinkSync(oldFilePath);
-				}
-			}
-
-			await file.mv(`./public/images/${fileNameKtp}`, (err) => {
-				if (err) return res.status(500).json({ msg: err.message });
-			});
-		}
 
 		// Upload Foto Profile
 		if (req.files && req.files.foto_profile) {
@@ -212,10 +136,6 @@ export const updateMe = async (req, res) => {
 		user.name = name || user.name;
 		user.email = email || user.email;
 		user.linkmedsos = linkmedsos || user.linkmedsos;
-		user.tanda_tangan = fileNameTtd || user.tanda_tangan;
-		user.url_tanda_tangan = urlTtd || user.url_tanda_tangan;
-		user.foto_ktp = fileNameKtp || user.foto_ktp;
-		user.url_foto_ktp = urlKtp || user.url_foto_ktp;
 		user.foto_profile = fileNameProfile || user.foto_profile;
 		user.url_foto_profile = urlProfile || user.url_foto_profile;
 
