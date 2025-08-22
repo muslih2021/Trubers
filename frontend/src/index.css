@@ -220,6 +220,10 @@ body {
 	max-width: 60rem;
 }
 
+.object-cover {
+	object-fit: cover;
+}
+
 /* Footer */
 .footer-gradient {
 	background: linear-gradient(to top, var(--secondary), var(--primary));
