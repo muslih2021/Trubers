@@ -279,6 +279,10 @@ body {
 	height: 32rem;
 }
 
+.martop {
+	margin-top: -2rem;
+}
+
 .lead-table-container {
   height: 32rem;
   overflow: auto;
