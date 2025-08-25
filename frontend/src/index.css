@@ -19,6 +19,51 @@ body {
 	font-family: "Poetsen One", cursive;
 }
 
+.containerloading {
+	display: flex;
+	justify-content: center; /* horizontal center */
+	align-items: center; /* vertical center */
+	height: 100vh; /* full viewport height */
+	background: #fff; /* putih penuh */
+}
+.donut {
+	/* ukuran */
+	width: 4rem;
+	aspect-ratio: 1;
+	border-radius: 50%;
+
+	/* gradasi keliling */
+	background: conic-gradient(#7149c6, #ff0055 70%, #7149c6);
+
+	/* lubang di tengah (masking) */
+	--hole: 35%; /* ubah ini untuk besar lubang */
+	mask: radial-gradient(
+		circle at 50% 50%,
+		transparent var(--hole),
+		#000 calc(var(--hole) + 1px)
+	);
+	-webkit-mask: radial-gradient(
+		circle at 50% 50%,
+		transparent var(--hole),
+		#000 calc(var(--hole) + 1px)
+	);
+
+	/* opsional: halus + sedikit bayangan */
+	filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
+
+	/* animasi putar */
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
 
 /* navbar */
 /* Hamburger Menu Styles */

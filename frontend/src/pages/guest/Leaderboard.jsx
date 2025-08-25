@@ -4,6 +4,7 @@ import useSWR from 'swr';
 import { Dropdown } from 'primereact/dropdown';
 import 'primeflex/primeflex.css';
 import profilePict from '../../assets/images/profile-picture.png';
+import LoadingSpinner from '../../components/LoadingSpinner.jsx';
 
 // fetcher SWR
 const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -23,7 +24,7 @@ const Leaderboard = () => {
 
   const { data, error, isLoading } = useSWR(url, fetcher);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return LoadingSpinner;
   if (error) return <p>Error: {error.message}</p>;
 
   // mapping data
