@@ -1,9 +1,9 @@
-import Navbar from "../../components/guest/Navbar.jsx";
-import React, { useState } from "react";
-import useSWR from "swr";
-import { Dropdown } from "primereact/dropdown";
-import "primeflex/primeflex.css";
-import profilePict from "../../assets/images/profile-picture.png";
+import Navbar from '../../components/guest/Navbar.jsx';
+import React, { useState } from 'react';
+import useSWR from 'swr';
+import { Dropdown } from 'primereact/dropdown';
+import 'primeflex/primeflex.css';
+import profilePict from '../../assets/images/profile-picture.png';
 
 // fetcher SWR
 const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -12,245 +12,256 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 const safeNumber = (value) => (value != null ? value : 0);
 
 const Leaderboard = () => {
-	const [activeButton, setActiveButton] = useState("Account");
-	const [orderBy, setOrderBy] = useState("total");
+  const [activeButton, setActiveButton] = useState('Account');
+  const [orderBy, setOrderBy] = useState('total');
 
-	// URL berdasarkan tab
-	const url =
-		activeButton === "Account"
-			? `http://localhost:5000/ContentReportByUserRank?orderBy=${orderBy}`
-			: `http://localhost:5000/ContentReportByPostRank?orderBy=${orderBy}`;
+  // URL berdasarkan tab
+  const url =
+    activeButton === 'Account'
+      ? `https://api.trubers.id/ContentReportByUserRank?orderBy=${orderBy}`
+      : `https://api.trubers.id/ContentReportByPostRank?orderBy=${orderBy}`;
 
-	const { data, error, isLoading } = useSWR(url, fetcher);
+  const { data, error, isLoading } = useSWR(url, fetcher);
 
-	if (isLoading) return <p>Loading...</p>;
-	if (error) return <p>Error: {error.message}</p>;
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
-	// mapping data
-	const mappedData =
-		data?.map((item) => {
-			if (activeButton === "Account") {
-				return {
-					id: item.id,
-					name: item.name,
-					username: item.nama_akun || "-",
-					avatar: item.url_foto_profile || profilePict,
-					like: safeNumber(item.totalLikes),
-					comment: safeNumber(item.totalComments),
-					view: safeNumber(item.totalViews),
-					nilai: safeNumber(item.totalScore),
-				};
-			} else {
-				const user = item.user || {};
-				return {
-					id: item.id,
-					name: user.name || "Unknown",
-					username: user.nama_akun || "-",
-					avatar: user.url_foto_profile || profilePict,
-					like: safeNumber(item.likes),
-					comment: safeNumber(item.comments),
-					view: safeNumber(item.video_views),
-					nilai: safeNumber(item.score),
-					url_postingan: item.url_postingan,
-				};
-			}
-		}) || [];
+  // mapping data
+  const mappedData =
+    data?.map((item) => {
+      if (activeButton === 'Account') {
+        return {
+          id: item.id,
+          name: item.name,
+          username: item.nama_akun || '-',
+          avatar: item.url_foto_profile || profilePict,
+          like: safeNumber(item.totalLikes),
+          comment: safeNumber(item.totalComments),
+          view: safeNumber(item.totalViews),
+          nilai: safeNumber(item.totalScore),
+        };
+      } else {
+        const user = item.user || {};
+        return {
+          id: item.id,
+          name: user.name || 'Unknown',
+          username: user.nama_akun || '-',
+          avatar: user.url_foto_profile || profilePict,
+          like: safeNumber(item.likes),
+          comment: safeNumber(item.comments),
+          view: safeNumber(item.video_views),
+          nilai: safeNumber(item.score),
+          url_postingan: item.url_postingan,
+        };
+      }
+    }) || [];
 
-	// sorting dinamis berdasarkan orderBy
-	const sortedData = [...mappedData].sort((a, b) => {
-		switch (orderBy) {
-			case "likes":
-				return b.like - a.like;
-			case "comments":
-				return b.comment - a.comment;
-			case "views":
-				return b.view - a.view;
-			case "score":
-				return b.nilai - a.nilai;
-			case "total":
-			default:
-				return b.like + b.comment + b.view - (a.like + a.comment + a.view);
-		}
-	});
+  // sorting dinamis berdasarkan orderBy
+  const sortedData = [...mappedData].sort((a, b) => {
+    switch (orderBy) {
+      case 'likes':
+        return b.like - a.like;
+      case 'comments':
+        return b.comment - a.comment;
+      case 'views':
+        return b.view - a.view;
+      case 'score':
+        return b.nilai - a.nilai;
+      case 'total':
+      default:
+        return b.like + b.comment + b.view - (a.like + a.comment + a.view);
+    }
+  });
 
-	// podium top 3
-	const topUsers = sortedData
-		.slice(0, 3)
-		.map((u, i) => ({ ...u, rank: i + 1 }));
+  // Cek jika data kosong
+  if (sortedData.length === 0) {
+    return (
+      <>
+        <Navbar />
+        <div className='bg-gradient-to-b from-primary to-secondary min-h-screen text-white p-3 md:p-6 font-jakarta flex align-items-center justify-content-center'>
+          <div className='text-center pt-6'>
+            <h1 className='text-2xl md:text-3xl font-bold mb-4'>
+              Maaf yah, Saat ini leaderboard belum ada.
+            </h1>
+            <p className='text-lg md:text-xl'>
+              Tunggu ketika sudah ada peserta, leaderboard akan ditampilkan
+            </p>
+          </div>
+        </div>
+      </>
+    );
+  }
 
-	const orderOptions = [
-		{ label: "Total (likes+comments+views)", value: "total" },
-		{ label: "Likes", value: "likes" },
-		{ label: "Comments", value: "comments" },
-		{ label: "Views", value: "views" },
-		{ label: "Score", value: "score" },
-	];
+  // podium top 3
+  const topUsers = sortedData
+    .slice(0, 3)
+    .map((u, i) => ({ ...u, rank: i + 1 }));
 
-	return (
-		<>
-			<Navbar />
-			<div className="bg-gradient-to-b from-primary to-secondary min-h-screen text-white p-3 md:p-6 font-jakarta">
-				{/* Tabs + Dropdown */}
-				<div className="flex justify-center rank-btn mb-4">
-					<Dropdown
-						value={orderBy}
-						options={orderOptions}
-						onChange={(e) => setOrderBy(e.value)}
-						placeholder="Sort By"
-						className="mr-4 w-60"
-					/>
-					{["Account", "Post"].map((name) => (
-						<button
-							key={name}
-							className={`btn-top-rank ${
-								activeButton === name ? "btn-active" : "btn-inactive"
-							}`}
-							onClick={() => setActiveButton(name)}
-						>
-							Top {name}
-						</button>
-					))}
-				</div>
+  const orderOptions = [
+    { label: 'Total (likes+comments+views)', value: 'total' },
+    { label: 'Likes', value: 'likes' },
+    { label: 'Comments', value: 'comments' },
+    { label: 'Views', value: 'views' },
+    { label: 'Score', value: 'score' },
+  ];
 
-				{/* Leaderboard + Table */}
-				<div className="grid lg:grid-cols-2 gap-4 md:gap-8 max-w-7xl mx-auto">
-					{/* Top 3 Podium */}
-					<div className="col-12 lg:col">
-						<div className="flex align-items-end justify-content-center gap-3 md:gap-6 mb-6 md:mb-12">
-							{[2, 1, 3].map((rank) => {
-								const user = topUsers.find((u) => u.rank === rank);
-								if (!user) return null;
+  return (
+    <>
+      <Navbar />
+      <div className='bg-gradient-to-b from-primary to-secondary min-h-screen text-white p-3 md:p-6 font-jakarta'>
+        {/* Tabs + Dropdown */}
+        <div className='lead-action-btn-container rank-btn mb-4'>
+          <Dropdown
+            value={orderBy}
+            options={orderOptions}
+            onChange={(e) => setOrderBy(e.value)}
+            placeholder='Sort By'
+            className='w-60'
+          />
 
-								const value =
-									orderBy === "total"
-										? Number(user.like) +
-										  Number(user.comment) +
-										  Number(user.view)
-										: orderBy === "likes"
-										? Number(user.like)
-										: orderBy === "comments"
-										? Number(user.comment)
-										: orderBy === "views"
-										? Number(user.view)
-										: Number(user.nilai);
+          {/* Tombol dibungkus flex inline */}
+          <div className='lead-btn-group'>
+            {['Account', 'Post'].map((name) => (
+              <button
+                key={name}
+                className={`btn-top-rank ${
+                  activeButton === name ? 'btn-active' : 'btn-inactive'
+                }`}
+                onClick={() => setActiveButton(name)}
+              >
+                Top {name}
+              </button>
+            ))}
+          </div>
+        </div>
 
-								return (
-									<div
-										key={rank}
-										className="flex flex-column align-items-center"
-									>
-										<div className="text-center mb-4 md:mb-6">
-											<img
-												src={user.avatar}
-												alt={user.name}
-												className="podium-avatar"
-											/>
-											<p className="podium-name">{user.name}</p>
-											<p className="podium-username">@{user.username}</p>
-											<p className="podium-value">{value.toLocaleString()}</p>
-										</div>
-										<div
-											className={`podium-bar ${
-												rank === 1
-													? "bar-one"
-													: rank === 2
-													? "bar-two"
-													: "bar-three"
-											}`}
-										>
-											<div className="podium-rank">{rank}</div>
-										</div>
-									</div>
-								);
-							})}
-						</div>
-					</div>
+        {/* Leaderboard + Table */}
+        <div className='grid lg:grid-cols-2 gap-4 md:gap-8 max-w-7xl mx-auto'>
+          {/* Top 3 Podium */}
+          <div className='col-12 lg:col'>
+            <div className='flex align-items-end justify-content-center gap-3 md:gap-6 mb-6 md:mb-12'>
+              {[2, 1, 3].map((rank) => {
+                const user = topUsers.find((u) => u.rank === rank);
+                if (!user) return null;
 
-					{/* Table Detail */}
-					{/* Rows */}
-					{sortedData.length === 0 ? (
-						<div className="flex w-12 justify-content-center text-center">
-							<h2 className="text-3xl md:text-7xl mb-4">
-								Leaderboard belum ada nih, <br />
-								Tunggu nanti ya!
-							</h2>
-						</div>
-					) : (
-						<div className=" bg-gray-900/70 border-round-xl p-0 overflow-hidden container-table-detail">
-							<div className="lead-table-container">
-								<div className="lead-table-detail">
-									{/* Header */}
-									<div className="lead-table-row bg-gray-800 text-gray-300 text-xs md:text-sm font-semibold">
-										<div className="lead-table-header col-rank">Rank</div>
-										<div className="lead-table-header col-name">Nama</div>
-										<div className="lead-table-header col-username">
-											Username
-										</div>
-										<div className="lead-table-header col-number">Like</div>
-										<div className="lead-table-header col-number">Comment</div>
-										<div className="lead-table-header col-number">View</div>
-										<div className="lead-table-header col-score">Nilai</div>
-										{activeButton === "Post" && (
-											<div className="lead-table-header col-link">Link</div>
-										)}
-									</div>
+                const value =
+                  orderBy === 'total'
+                    ? Number(user.like) +
+                      Number(user.comment) +
+                      Number(user.view)
+                    : orderBy === 'likes'
+                    ? Number(user.like)
+                    : orderBy === 'comments'
+                    ? Number(user.comment)
+                    : orderBy === 'views'
+                    ? Number(user.view)
+                    : Number(user.nilai);
 
-									{/* Rows */}
-									{sortedData.map((user, index) => (
-										<div
-											key={user.id}
-											className="lead-table-row bg-gray-900 hover:bg-gray-800 transition-colors"
-										>
-											<div className="lead-table-cell col-rank font-semibold text-xs md:text-sm">
-												{index + 1}
-											</div>
-											<div
-												className="lead-table-cell col-name text-xs md:text-sm"
-												title={user.name}
-											>
-												{user.name}
-											</div>
-											<div
-												className="lead-table-cell col-username text-gray-400 text-xs"
-												title={user.username}
-											>
-												@{user.username}
-											</div>
-											<div className="lead-table-cell col-number text-xs md:text-sm">
-												{user.like.toLocaleString()}
-											</div>
-											<div className="lead-table-cell col-number text-xs md:text-sm">
-												{user.comment.toLocaleString()}
-											</div>
-											<div className="lead-table-cell col-number text-xs md:text-sm">
-												{user.view.toLocaleString()}
-											</div>
-											<div className="lead-table-cell col-score text-xs md:text-sm">
-												{user.nilai.toLocaleString()}
-											</div>
-											{activeButton === "Post" && (
-												<div className="lead-table-cell col-link">
-													<a
-														href={user.url_postingan}
-														target="_blank"
-														rel="noopener noreferrer"
-														className="text-blue-400 hover:underline text-xs"
-														title="Buka postingan"
-													>
-														Link
-													</a>
-												</div>
-											)}
-										</div>
-									))}
-								</div>
-							</div>
-						</div>
-					)}
-				</div>
-			</div>
-		</>
-	);
+                return (
+                  <div
+                    key={rank}
+                    className='flex flex-column align-items-center'
+                  >
+                    <div className='text-center mb-4 md:mb-6'>
+                      <img
+                        src={user.avatar}
+                        alt={user.name}
+                        className='podium-avatar'
+                      />
+                      <p className='podium-name'>{user.name}</p>
+                      <p className='podium-username'>@{user.username}</p>
+                      <p className='podium-value'>{value.toLocaleString()}</p>
+                    </div>
+                    <div
+                      className={`podium-bar ${
+                        rank === 1
+                          ? 'bar-one'
+                          : rank === 2
+                          ? 'bar-two'
+                          : 'bar-three'
+                      }`}
+                    >
+                      <div className='podium-rank'>{rank}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Table Detail */}
+          <div className=' bg-gray-900/70 border-round-xl p-0 overflow-hidden container-table-detail'>
+            <div className='lead-table-container'>
+              <div className='lead-table-detail'>
+                {/* Header */}
+                <div className='lead-table-row bg-gray-800 text-gray-300 text-xs md:text-sm font-semibold'>
+                  <div className='lead-table-header col-rank'>Rank</div>
+                  <div className='lead-table-header col-name'>Nama</div>
+                  <div className='lead-table-header col-username'>Username</div>
+                  <div className='lead-table-header col-number'>Like</div>
+                  <div className='lead-table-header col-number'>Comment</div>
+                  <div className='lead-table-header col-number'>View</div>
+                  <div className='lead-table-header col-score'>Nilai</div>
+                  {activeButton === 'Post' && (
+                    <div className='lead-table-header col-link'>Link</div>
+                  )}
+                </div>
+
+                {/* Rows */}
+                {sortedData.map((user, index) => (
+                  <div
+                    key={user.id}
+                    className='lead-table-row bg-gray-900 hover:bg-gray-800 transition-colors'
+                  >
+                    <div className='lead-table-cell col-rank font-semibold text-xs md:text-sm'>
+                      {index + 1}
+                    </div>
+                    <div
+                      className='lead-table-cell col-name text-xs md:text-sm'
+                      title={user.name}
+                    >
+                      {user.name}
+                    </div>
+                    <div
+                      className='lead-table-cell col-username text-gray-400 text-xs'
+                      title={user.username}
+                    >
+                      @{user.username}
+                    </div>
+                    <div className='lead-table-cell col-number text-xs md:text-sm'>
+                      {user.like.toLocaleString()}
+                    </div>
+                    <div className='lead-table-cell col-number text-xs md:text-sm'>
+                      {user.comment.toLocaleString()}
+                    </div>
+                    <div className='lead-table-cell col-number text-xs md:text-sm'>
+                      {user.view.toLocaleString()}
+                    </div>
+                    <div className='lead-table-cell col-score text-xs md:text-sm'>
+                      {user.nilai.toLocaleString()}
+                    </div>
+                    {activeButton === 'Post' && (
+                      <div className='lead-table-cell col-link'>
+                        <a
+                          href={user.url_postingan}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className='text-blue-400 hover:underline text-xs'
+                          title='Buka postingan'
+                        >
+                          Link
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Leaderboard;

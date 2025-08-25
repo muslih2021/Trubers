@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import icon from '../../assets/images/icon.svg';
 import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -69,7 +71,7 @@ const Navbar = () => {
         </a>
 
         <button
-          className='p-2 md:hidden'
+          className='p-2 md:hidden hamburger-btn'
           onClick={toggleMenu}
           aria-label='Toggle menu'
         >
@@ -112,7 +114,13 @@ const Navbar = () => {
             </a>
           </li>
           <li>
-            <button className='login-btn w-full'>Login</button>
+            <button
+              onClick={() => navigate('/login')}
+              className='login-btn w-full'
+              style={{ marginTop: '2rem' }}
+            >
+              Login
+            </button>
           </li>
         </ul>
       </div>
