@@ -24,7 +24,12 @@ const Leaderboard = () => {
 
   const { data, error, isLoading } = useSWR(url, fetcher);
 
-  if (isLoading) return LoadingSpinner;
+  if (isLoading)
+		return (
+			<div class="containerloading">
+				<div class="donut"></div>
+			</div>
+		);
   if (error) return <p>Error: {error.message}</p>;
 
   // mapping data

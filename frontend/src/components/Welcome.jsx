@@ -104,7 +104,12 @@ const Welcome = () => {
 		if (user?.id) checkSubscriptionStatus();
 	}, [user]);
 
-	if (isLoading) return LoadingSpinner;
+	if (isLoading)
+    return (
+      <div class='containerloading'>
+        <div class='donut'></div>
+      </div>
+    );
 	if (error) return <p>Error: {error.message}</p>;
 	return (
 		<div className="min-w-full px-2 md:flex pb-8 md:px-6 justify-content-center gap-6">

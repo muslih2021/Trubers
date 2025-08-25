@@ -64,7 +64,6 @@ const ProfileComponent = () => {
 	const [subscribed, setSubscribed] = useState(false);
 
 	useEffect(() => {
-		if (isLoadingUpdate) return LoadingSpinner;
 		const checkSubscriptionStatus = async () => {
 			try {
 				const registration = await navigator.serviceWorker.ready;
