@@ -41,7 +41,7 @@ const Sidebar = () => {
 		<aside
 			className={`shrink-box ${
 				small ? "shrink" : ""
-			}  justify-content-between neobackground flex md:flex-column  align-items-center  md:py-4 md:overflow-x-hidden md:h-full border-6 border-round-3xl  `}
+			}  justify-content-between neobackground flex md:flex-column  align-items-center  md:py-4 md:overflow-x-hidden md:h-full border-6 border-round-3xl`}
 		>
 			<ul className="w-full md:w-10 w-12  md:flex flex-column   align-items-center m-0 p-0  list-none">
 				<div className="flex  md:flex-column align-items-left ">
@@ -107,7 +107,7 @@ const Sidebar = () => {
 							<Skeleton height="1rem" className="mb-2"></Skeleton>
 						)}
 					</div>
-					<div className={`container ${small ? "shrink" : ""} `}>
+					<div className={`container  ${small ? "shrink" : ""} `}>
 						<ul className="list-none p-0 my-3 md:flex-order-1 flex-order-2">
 							<li className="text-center ">
 								<NavLink
