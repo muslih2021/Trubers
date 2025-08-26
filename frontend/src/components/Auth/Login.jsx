@@ -15,6 +15,8 @@ import { showDialog, hideDialog } from "../../features/dialogSlice";
 import { Checkbox } from "primereact/checkbox";
 import imagelogin from "../../assets/images/loginimage.png";
 import lupalogin from "../../assets/images/lupalogin.png";
+import successImg from "../../assets/images/success.png"
+
 const Login = () => {
 	const dispatch = useDispatch();
 	const {
@@ -132,10 +134,8 @@ const Login = () => {
 			>
 				<div className="fadein animation-duration-1000">
 					<img
-						style={{ width: "100%", height: "auto" }}
-						src="https://lottie.host/4b5d3e7e-29ca-4228-a8b0-5023b6da5a63/YcwyvKHgzZ.lottie"
-						loop
-						autoplay
+						style={{ width: "8 rem", height: "auto" }}
+						src={successImg}
 					/>
 					<h3 className="text-center m-0  text-secondary">
 						Registrasi {dialogMessage} !
@@ -152,7 +152,7 @@ const Login = () => {
 				onSubmit={Auth}
 				className="py-4   md:-mt-6 bg-white  flex-order-3 md:flex-order-1 flex-1 flex flex-column  align-items-center justify-content-center"
 			>
-				<div className="md:w-9 fadeinup flex gap-3  animation-duration-2000  align-items-center md:-ml-8 flex md:-mt-8  md:mb-8">
+				<div className="md:w-9 fadeinup gap-3  animation-duration-2000  align-items-center md:-ml-8 flex md:-mt-8  md:mb-8">
 					<img
 						src="src/assets/images/logo.png"
 						alt=""
