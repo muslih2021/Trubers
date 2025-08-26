@@ -18,6 +18,7 @@ import {
 import { InputSwitch } from "primereact/inputswitch";
 import axios from "axios";
 import { Accordion, AccordionTab } from "primereact/accordion";
+import LoadingSpinner from "./LoadingSpinner";
 
 const API_URL = import.meta.env.VITE_API_URL_BACKEND;
 
@@ -58,6 +59,7 @@ const ProfileComponent = () => {
 		sekolah: "",
 		kelas: "",
 	});
+
 
 	const [subscribed, setSubscribed] = useState(false);
 
