@@ -565,3 +565,27 @@ body {
 		margin-top: 2rem; /* hanya berlaku di layar besar */
 	}
 }
+.border-chart {
+	border: #eaeaea solid 1px;
+}
+.border-chart i {
+	color: #9c9c9c;
+}
+.bg-white {
+	background-color: white;
+}
+/* CSS */
+
+.custom-dialog {
+	background: linear-gradient(to bottom, #25114f, #7149c6);
+	height: 10rem;
+	color: #fff;
+}
+.custom-dialog-profile-main {
+	background-color: rgb(255, 255, 255);
+}
+.custom-dialog-profile {
+	background: linear-gradient(to bottom, #d1d1d1, #7b7b7b);
+	height: 6rem;
+	color: #fff;
+}

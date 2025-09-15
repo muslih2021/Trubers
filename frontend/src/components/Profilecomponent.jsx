@@ -60,7 +60,6 @@ const ProfileComponent = () => {
 		kelas: "",
 	});
 
-
 	const [subscribed, setSubscribed] = useState(false);
 
 	useEffect(() => {
@@ -478,7 +477,7 @@ const ProfileComponent = () => {
 									className="p-inputtext-sm md:p-inputtext-md w-full"
 								/>
 								<label className="lufga" htmlFor="nama_akun">
-									Nama Akun
+									Nama Akun/tanpa tanda '@'
 								</label>
 							</FloatLabel>
 

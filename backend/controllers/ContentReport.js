@@ -181,6 +181,10 @@ export const createContentReport = async (req, res) => {
 	try {
 		const userPembuat = await User.findOne({ where: { id: req.userId } });
 
+		if (!userPembuat) {
+			return res.status(404).json({ msg: "User tidak ditemukan" });
+		}
+
 		// Validasi tema
 		const selectedTheme = await Theme.findOne({
 			where: { id: themeId, status: "aktif" },
@@ -199,16 +203,20 @@ export const createContentReport = async (req, res) => {
 		let comments = 0;
 		let video_views = 0;
 		let description_caption = null;
+		let usernamePostingan = null;
 
 		if (url_postingan.includes("instagram.com")) {
 			scrapingData = await getInstagramData(url_postingan);
 			if (!scrapingData) {
 				return res.status(400).json({ msg: "Tolong cek URL Anda (Instagram)" });
 			}
+
 			likes = scrapingData.like_count;
 			comments = scrapingData.comment_count;
 			video_views = scrapingData.video_play_count;
 			description_caption = scrapingData.caption || null;
+			usernamePostingan = scrapingData.username || null;
+
 			if (scrapingData.thumbnail_src) {
 				urlThumbnail = await downloadImage(scrapingData.thumbnail_src, req);
 			}
@@ -220,10 +228,13 @@ export const createContentReport = async (req, res) => {
 			if (!scrapingData) {
 				return res.status(400).json({ msg: "Tolong cek URL Anda (TikTok)" });
 			}
+
 			likes = scrapingData.digg_count;
 			comments = scrapingData.comment_count;
 			video_views = scrapingData.play_count;
 			description_caption = scrapingData.desc || null;
+			usernamePostingan = scrapingData.username || null;
+
 			if (scrapingData.cover) {
 				urlThumbnail = await downloadImage(scrapingData.cover, req);
 			}
@@ -232,6 +243,18 @@ export const createContentReport = async (req, res) => {
 			return res
 				.status(400)
 				.json({ msg: "URL tidak valid, hanya Instagram atau TikTok" });
+		}
+
+		// 🔎 Validasi nama akun vs username postingan
+		if (
+			usernamePostingan &&
+			userPembuat.nama_akun.toLowerCase() !== usernamePostingan.toLowerCase()
+		) {
+			return res.status(400).json({
+				msg: "Nama anda tidak cocok dengan nama orang yang memposting",
+				your_name: userPembuat.nama_akun,
+				post_username: usernamePostingan,
+			});
 		}
 
 		// Buat pengajuan
@@ -252,6 +275,12 @@ export const createContentReport = async (req, res) => {
 		res.status(201).json({ msg: "Berhasil", pengajuan });
 	} catch (error) {
 		console.error("Error saat membuat pengajuan content:", error);
+
+		// 🔎 Tangani error unique constraint
+		if (error.name === "SequelizeUniqueConstraintError") {
+			return res.status(400).json({ msg: "Konten sudah ada" });
+		}
+
 		res.status(500).json({ msg: "Terjadi kesalahan saat membuat pengajuan" });
 	}
 };
@@ -266,6 +295,7 @@ export const updateUrlPostinganByUUID = async (req, res) => {
 		let comments = 0;
 		let video_views = 0;
 		let description_caption = null;
+		let usernamePostingan = null;
 
 		if (!url_postingan) {
 			return res.status(400).json({ msg: "url_postingan wajib diisi" });
@@ -282,6 +312,12 @@ export const updateUrlPostinganByUUID = async (req, res) => {
 			return res.status(404).json({ msg: "Data tidak ditemukan" });
 		}
 
+		// Ambil data user pembuat (untuk validasi nama akun)
+		const userPembuat = await User.findOne({ where: { id: pengajuan.userId } });
+		if (!userPembuat) {
+			return res.status(404).json({ msg: "User tidak ditemukan" });
+		}
+
 		// Scraping berdasarkan domain
 		if (url_postingan.includes("instagram.com")) {
 			scrapingData = await getInstagramData(url_postingan);
@@ -290,6 +326,7 @@ export const updateUrlPostinganByUUID = async (req, res) => {
 			comments = scrapingData.comment_count || 0;
 			video_views = scrapingData.video_play_count || 0;
 			description_caption = scrapingData.caption || null;
+			usernamePostingan = scrapingData.username || null;
 
 			if (scrapingData.thumbnail_src) {
 				urlThumbnail = await downloadImage(scrapingData.thumbnail_src, req);
@@ -304,10 +341,26 @@ export const updateUrlPostinganByUUID = async (req, res) => {
 			comments = scrapingData.comment_count || 0;
 			video_views = scrapingData.play_count || 0;
 			description_caption = scrapingData.desc || null;
-
+			usernamePostingan = scrapingData.username || null;
 			if (scrapingData.cover) {
 				urlThumbnail = await downloadImage(scrapingData.cover, req);
 			}
+		} else {
+			return res
+				.status(400)
+				.json({ msg: "URL tidak valid, hanya Instagram atau TikTok" });
+		}
+
+		// 🔎 Validasi nama akun vs username postingan
+		if (
+			usernamePostingan &&
+			userPembuat.nama_akun.toLowerCase() !== usernamePostingan.toLowerCase()
+		) {
+			return res.status(400).json({
+				msg: "Nama anda tidak cocok dengan nama orang yang memposting",
+				your_name: userPembuat.nama_akun,
+				post_username: usernamePostingan,
+			});
 		}
 
 		// Update field sesuai hasil scraping
@@ -327,12 +380,17 @@ export const updateUrlPostinganByUUID = async (req, res) => {
 		});
 	} catch (error) {
 		console.error("Error saat update url_postingan:", error);
+
+		// 🔎 Tangani error unique constraint dari DB
+		if (error.name === "SequelizeUniqueConstraintError") {
+			return res.status(400).json({ msg: "Konten sudah ada" });
+		}
+
 		return res
 			.status(500)
 			.json({ msg: "Terjadi kesalahan saat update url_postingan" });
 	}
 };
-
 // admin
 export const updateContentReportById = async (req, res) => {
 	const { uuid } = req.params;
@@ -616,6 +674,7 @@ export const getAllUsersWithContents = async (req, res) => {
 			attributes: [
 				"id",
 				"name",
+				"uuid",
 				"nama_akun",
 				"url_foto_profile",
 				[fn("SUM", col("contentreports.likes")), "totalLikes"],
@@ -714,5 +773,58 @@ export const getContentReportByPostRank = async (req, res) => {
 	} catch (error) {
 		console.error("Error getContentReportByPostRank:", error);
 		res.status(500).json({ msg: error.message });
+	}
+};
+
+///New
+export const getContentReportByUserUuid = async (req, res) => {
+	try {
+		const { uuid } = req.params;
+		const { themeId } = req.query;
+
+		let themeFilter = {};
+
+		// Kalau themeId ada dan bukan "semua"
+		if (themeId && themeId !== "semua") {
+			themeFilter.themeId = {
+				[Op.in]: themeId.split(",").map((id) => parseInt(id)),
+			};
+		}
+
+		const user = await User.findOne({
+			where: { uuid },
+			attributes: [
+				"uuid",
+				"name",
+				"email",
+				"linkmedsos",
+				"sosmed_utama",
+				"nama_akun",
+				"jumlah_follower_terakhir",
+				"kota",
+				"interest_minat",
+				"sekolah",
+				"kelas",
+				"url_foto_profile",
+			],
+			include: [
+				{
+					model: ContentReport,
+					where: Object.keys(themeFilter).length ? themeFilter : undefined,
+					required: false,
+					include: [{ model: Theme }],
+					order: [["createdAt", "DESC"]],
+				},
+			],
+		});
+
+		if (!user) {
+			return res.status(404).json({ message: "User tidak ditemukan" });
+		}
+
+		res.status(200).json(user);
+	} catch (error) {
+		console.error("Error getContentReportByUserUuid:", error);
+		res.status(500).json({ message: error.message });
 	}
 };

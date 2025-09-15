@@ -88,7 +88,7 @@ const ResetPassword = () => {
 						className="text-title lufga-medium ml-2"
 					>
 						{" "}
-						Desa Pulau Ay
+						Trubers
 					</h1>
 				</div>
 				<div className="w-8 my-3 flex justify-content-left">

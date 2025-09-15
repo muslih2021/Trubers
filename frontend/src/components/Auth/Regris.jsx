@@ -151,16 +151,8 @@ const Regis = () => {
 				className="bg-white md:overflow-y-auto  md:py-8 flex-order-3 md:flex-order-3 flex-1 flex flex-column  align-items-center justify-content-center"
 			>
 				<div className="md:w-9 fadeinup   animation-duration-2000  align-items-center md:-ml-8 flex gap-4 md:-mt-8 mb-4  md:mb-4">
-					<img
-						src={logo}
-						alt=""
-						className="md:w-8rem signup-title w-8rem  "
-					/>
-					<img
-						src={logot}
-						alt=""
-						className="md:w-8rem signup-title w-8rem  "
-					/>
+					<img src={logo} alt="" className="md:w-8rem signup-title w-8rem  " />
+					<img src={logot} alt="" className="md:w-8rem signup-title w-8rem  " />
 				</div>
 
 				<h1 className="w-10 text-title text-5xl text-left lufga-extrabold fadeinup animation-duration-1000">
@@ -232,7 +224,7 @@ const Regis = () => {
 								required
 							/>
 							<label className="lufga" htmlFor="nama_akun">
-								Nama Akun
+								Nama Akun/tanpa tanda '@''
 							</label>
 						</FloatLabel>
 						{/* Link Akun */}

@@ -9,6 +9,7 @@ import {
 	getContentReportUsers,
 	getAllUsersWithContents,
 	getContentReportByPostRank,
+	getContentReportByUserUuid,
 } from "../controllers/ContentReport.js";
 import { verifyUser, adminOnly } from "../middleware/AuthUser.js";
 
@@ -37,5 +38,10 @@ router.delete(
 	adminOnly,
 	deleteContentReport
 );
-
+router.get(
+	"/ContentReportPerforma/:uuid",
+	// verifyUser,
+	// adminOnly,
+	getContentReportByUserUuid
+);
 export default router;

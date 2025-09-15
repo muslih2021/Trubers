@@ -30,6 +30,7 @@ const ContentReport = db.define(
 				notEmpty: true,
 				isUrl: true,
 			},
+			unique: true,
 		},
 		likes: {
 			type: DataTypes.BIGINT,

@@ -53,6 +53,7 @@ export const getInstagramData = async (url) => {
 		like_count: items?.edge_media_preview_like?.count || 0,
 		comment_count: items?.edge_media_to_comment?.count || 0,
 		thumbnail_src: items?.thumbnail_src,
+		username: items?.owner?.username,
 	};
 };
 
@@ -68,5 +69,6 @@ export const getTiktokData = async (url) => {
 		digg_count: item.statistics.digg_count,
 		play_count: item.statistics.play_count,
 		cover: item.video.cover.url_list[0],
+		username: item.author.unique_id,
 	};
 };

@@ -131,3 +131,18 @@ export const getThemeById = async (req, res) => {
 		res.status(500).json({ msg: "Gagal mengambil tema", error: error.message });
 	}
 };
+
+export const getAllThemes = async (req, res) => {
+	try {
+		const themes = await Theme.findAll();
+
+		res.status(200).json({
+			data: themes,
+		});
+	} catch (error) {
+		console.error("Error getAllThemes:", error);
+		res
+			.status(500)
+			.json({ msg: "Gagal mengambil semua tema", error: error.message });
+	}
+};

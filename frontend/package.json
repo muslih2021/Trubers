@@ -12,6 +12,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.0",
     "axios": "^1.8.1",
+    "chart.js": "^4.5.0",
     "dayjs": "^1.11.13",
     "file-saver": "^2.0.5",
     "lucide-react": "^0.540.0",
