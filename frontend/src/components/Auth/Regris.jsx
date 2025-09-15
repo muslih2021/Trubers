@@ -14,6 +14,8 @@ import { useDispatch } from "react-redux";
 import { Dropdown } from "primereact/dropdown";
 import regis1 from "../../assets/images/regis2.png";
 import regis2 from "../../assets/images/regis1.png";
+import logo from "../../assets/images/logo.png";
+import logot from "../../assets/images/logot.png";
 
 const Regis = () => {
 	const toast = useRef(null);
@@ -150,12 +152,12 @@ const Regis = () => {
 			>
 				<div className="md:w-9 fadeinup   animation-duration-2000  align-items-center md:-ml-8 flex gap-4 md:-mt-8 mb-4  md:mb-4">
 					<img
-						src="src/assets/images/logo.png"
+						src={logo}
 						alt=""
 						className="md:w-8rem signup-title w-8rem  "
 					/>
 					<img
-						src="src/assets/images/logot.png"
+						src={logot}
 						alt=""
 						className="md:w-8rem signup-title w-8rem  "
 					/>
